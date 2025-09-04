@@ -44,15 +44,23 @@ interface Social {
 }
 
 const defaultConfig: SiteConfig = {
-  name: "懒洋洋喝咖啡",
-  title: "懒洋洋喝咖啡",
-  description: "记录生活中的美好瞬间，通过我的镜头记录每日的温暖和情感。",
-  url: 'https://pix.tanmantang.com/',
+  name: '懒洋洋喝咖啡',
+  title: '懒洋洋喝咖啡',
+  description: '记录生活中的美好瞬间，通过我的镜头记录每日的温暖和情感。',
+  url: 'https://pix.tanmantang.com',
   accentColor: '#007bff',
   author: {
-    name: 'tanmantang',
+    name: '谭满堂',
     url: 'https://tanmantang.com/',
     avatar: 'https://tanmantang.oss-cn-chengdu.aliyuncs.com/public/logo.png',
+  },
+  map: ['maplibre'],
+  mapStyle: 'https://tiles.openfreemap.org/styles/liberty',
+  social: {
+    github: 'tangmantan/afilmory',
+    gitee: 'tanmantang/afilmory',
+    douyin: 'https://douyin.com',
+    rss: true,
   },
 }
 export const siteConfig: SiteConfig = merge(defaultConfig, userConfig) as any
