@@ -44,7 +44,7 @@ export async function generateFavicons() {
 
   // 检查 logo 文件是否存在
   if (!existsSync(logoPath)) {
-    throw new Error('Logo file not found: logo.jpg')
+    throw new Error(`Logo file not found: ${logoPath}`)
   }
 
   if (!existsSync(outputDir)) {
@@ -107,7 +107,7 @@ export async function generateFavicons() {
     // PWA manifest 由 vite-plugin-pwa 生成，这里不再生成重复的文件
 
     console.info(
-      `🎨 All favicons generated successfully from logo.jpg with rounded corners!`,
+      `🎨 All favicons generated successfully from logo with rounded corners!`,
     )
   } catch (error) {
     console.error('❌ Error generating favicons:', error)

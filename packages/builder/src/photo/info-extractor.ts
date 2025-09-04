@@ -53,7 +53,7 @@ export function extractPhotoInfo(
       // 如果是 Date 对象，直接使用
       if (dateTimeOriginal instanceof Date) {
         dateTaken = dateTimeOriginal.toISOString()
-        log.info('使用 EXIF Date 对象作为拍摄时间')
+        log.info('使用 DateTimeOriginal 作为拍摄时间')
       } else {
         log?.warn(
           `未知的 DateTimeOriginal 类型：${typeof dateTimeOriginal}`,
@@ -66,7 +66,26 @@ export function extractPhotoInfo(
         error,
       )
     }
+  } else if (exifData?.CreateDate) {
+    try {
+      const createDate = new Date(exifData.CreateDate)
+      // 如果是 Date 对象，直接使用
+      if (createDate instanceof Date) {
+        dateTaken = createDate.toISOString()
+        log.info(`${key}: 使用 EXIF CreateDate ${exifData?.CreateDate} 作为拍摄时间`)
   } else {
+        log?.warn(
+          `未知的 CreateDate 类型：${typeof createDate}`,
+          createDate,
+        )
+      }
+    } catch (error) {
+      log?.warn(
+        `解析 EXIF CreateDate 失败：${exifData.CreateDate}`,
+        error,
+      )
+    }
+  }else {
     // 如果 EXIF 中没有日期，尝试从文件名解析
     const dateMatch = fileName.match(/(\d{4}-\d{2}-\d{2})/)
     if (dateMatch) {

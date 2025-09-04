@@ -123,6 +123,7 @@ export interface PickedExif {
   // 日期时间（处理后的 ISO 格式）
   DateTimeOriginal?: string
   DateTimeDigitized?: string
+  CreateDate?: string
 
   // 图像尺寸
   ImageWidth?: number

@@ -38,20 +38,21 @@ interface Author {
 interface Social {
   twitter?: string
   github?: string
+  gitee?: string
+  douyin?: string
   rss?: boolean
 }
 
 const defaultConfig: SiteConfig = {
-  name: "Innei's Afilmory",
-  title: "Innei's Afilmory",
-  description:
-    'Capturing beautiful moments in life, documenting daily warmth and emotions through my lens.',
-  url: 'https://afilmory.innei.in',
+  name: "懒洋洋喝咖啡",
+  title: "懒洋洋喝咖啡",
+  description: "记录生活中的美好瞬间，通过我的镜头记录每日的温暖和情感。",
+  url: 'https://pix.tanmantang.com/',
   accentColor: '#007bff',
   author: {
-    name: 'Innei',
-    url: 'https://innei.in/',
-    avatar: 'https://cdn.jsdelivr.net/gh/Innei/static@master/avatar.png',
+    name: 'tanmantang',
+    url: 'https://tanmantang.com/',
+    avatar: 'https://tanmantang.oss-cn-chengdu.aliyuncs.com/public/logo.png',
   },
 }
 export const siteConfig: SiteConfig = merge(defaultConfig, userConfig) as any

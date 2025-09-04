@@ -134,6 +134,7 @@ const pickKeys: Array<keyof Tags | (string & {})> = [
 function handleExifData(exifData: Tags, metadata: Metadata): PickedExif {
   const date = {
     DateTimeOriginal: formatExifDate(exifData.DateTimeOriginal),
+    CreateDate: formatExifDate(exifData.CreateDate),
     DateTimeDigitized: formatExifDate(exifData.DateTimeDigitized),
     OffsetTime: exifData.OffsetTime,
     OffsetTimeOriginal: exifData.OffsetTimeOriginal,

@@ -18,6 +18,7 @@ import { isMobileDevice } from '~/lib/device-viewport'
 import { ImageLoaderManager } from '~/lib/image-loader-manager'
 import { getImageFormat } from '~/lib/image-utils'
 import type { PhotoManifest } from '~/types/photo'
+import { formatDateTime } from '../../components/ui/photo-viewer/formatExifData'
 
 export const MasonryPhotoItem = ({
   data,
@@ -223,6 +224,7 @@ export const MasonryPhotoItem = ({
       style={{
         width,
         height: calculatedHeight,
+        borderRadius: 12,
       }}
       data-photo-id={data.id}
       onClick={handleClick}
@@ -337,6 +339,11 @@ export const MasonryPhotoItem = ({
                 </span>
                 <span>•</span>
                 <span>{(data.size / 1024 / 1024).toFixed(1)}MB</span>
+                {data.exif?.DateTimeOriginal && (
+                  <span>
+                    {formatDateTime(new Date(data.exif?.DateTimeOriginal || ''))}
+                  </span>
+                )}
               </div>
 
               {/* Tags */}

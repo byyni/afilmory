@@ -330,7 +330,7 @@ export const FilterPanel = () => {
         {/* Reset all filters */}
         <Button
           variant="ghost"
-          className="opacity-80"
+          className="opacity-80 pointer-events-auto"
           size="xs"
           onClick={() => {
             setGallerySetting((prev) => ({
@@ -348,7 +348,7 @@ export const FilterPanel = () => {
           }}
         >
           <i className="i-mingcute-refresh-1-line mr-1 text-sm" />
-          Reset
+          {t('tmt.reset')}
         </Button>
       </div>
 
@@ -506,7 +506,7 @@ const StarRating = ({
               className={clsxm(
                 'text-2xl',
                 rating <= (hoveredRating ?? value ?? 0)
-                  ? 'i-mingcute-star-fill text-yellow-400 dark:text-yellow-500'
+                  ? 'i-mingcute-star-fill text-yellow-400 dark:text-yellow-400'
                   : 'i-mingcute-star-line text-gray-300 dark:text-gray-600',
               )}
             />

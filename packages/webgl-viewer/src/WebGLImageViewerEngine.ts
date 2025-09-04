@@ -413,7 +413,7 @@ export class WebGLImageViewerEngine extends ImageViewerEngineBase {
       this.loadImageResolve = resolve
       this.loadImageReject = reject
 
-      console.info('[Engine] Posting "load-image" to worker', this.worker)
+      // console.info('[Engine] Posting "load-image" to worker', this.worker)
       this.worker?.postMessage({
         type: 'load-image',
         payload: { url },
