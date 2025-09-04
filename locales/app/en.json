@@ -1,4 +1,11 @@
 {
+  "tmt.update.at": "Gallery Updated at",
+  "tmt.douyin": "tiktok",
+  "tmt.reset": "Reset",
+  "tmt.year": "-",
+  "tmt.bilibili": "bilibili",
+  "tmt.xiaohongshu": "rednote",
+  "tmt.build.at": "Website Build at",
   "action.auto": "Auto",
   "action.camera.clear": "Clear",
   "action.camera.empty": "No cameras available",

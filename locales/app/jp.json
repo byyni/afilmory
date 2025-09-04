@@ -1,4 +1,11 @@
 {
+  "tmt.update.at": "更新日",
+  "tmt.douyin": "ティックトック",
+  "tmt.reset": "リセット",
+  "tmt.year": "年",
+  "tmt.bilibili": "ビリビリ",
+  "tmt.xiaohongshu": "レッドノート",
+  "tmt.build.at": "ウェブサイトビルド日",
   "action.auto": "自動",
   "action.camera.clear": "クリア",
   "action.camera.empty": "カメラがありません",

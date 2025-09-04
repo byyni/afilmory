@@ -1,4 +1,11 @@
 {
+  "tmt.update.at": "업데이트 날짜",
+  "tmt.douyin": "tiktok",
+  "tmt.reset": "재설정",
+  "tmt.year": "년",
+  "tmt.bilibili": "bilibili",
+  "tmt.xiaohongshu": "레드노트",
+  "tmt.build.at": "웹사이트 빌드 날짜",
   "action.auto": "자동",
   "action.camera.clear": "지우기",
   "action.camera.empty": "카메라가 없습니다",
