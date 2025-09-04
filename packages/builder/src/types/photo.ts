@@ -98,6 +98,10 @@ export interface PickedExif {
   // 光源和闪光灯
   LightSource?: string
   Flash?: string
+  // 描述相关字段
+  UserComment?: string
+  ImageDescription?: string
+  'Caption-Abstract'?: string
 
   // 焦距相关
   FocalLength?: string

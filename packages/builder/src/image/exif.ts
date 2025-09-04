@@ -2,7 +2,7 @@ import { mkdir, unlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { isNil, noop } from 'es-toolkit'
-import type { ExifDateTime, Tags } from 'exiftool-vendored'
+import type { ExifDate, ExifDateTime, Tags } from 'exiftool-vendored'
 import { exiftool } from 'exiftool-vendored'
 import type { Metadata } from 'sharp'
 import sharp from 'sharp'
@@ -130,6 +130,10 @@ const pickKeys: Array<keyof Tags | (string & {})> = [
   'GPSLongitudeRef',
   // HDR相关字段
   'MPImageType',
+  // 描述相关字段
+  'UserComment',
+  'ImageDescription',
+  'Caption-Abstract',
 ]
 function handleExifData(exifData: Tags, metadata: Metadata): PickedExif {
   const date = {
@@ -195,12 +199,18 @@ function handleExifData(exifData: Tags, metadata: Metadata): PickedExif {
   }
 }
 
-const formatExifDate = (date: string | ExifDateTime | undefined) => {
+const formatExifDate = (
+  date: string | number | ExifDateTime | ExifDate | undefined,
+) => {
   if (!date) {
     return
   }
 
   if (typeof date === 'string') {
+    return new Date(date).toISOString()
+  }
+
+  if (typeof date === 'number') {
     return new Date(date).toISOString()
   }
 

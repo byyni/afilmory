@@ -72,20 +72,16 @@ export function extractPhotoInfo(
       // 如果是 Date 对象，直接使用
       if (createDate instanceof Date) {
         dateTaken = createDate.toISOString()
-        log.info(`${key}: 使用 EXIF CreateDate ${exifData?.CreateDate} 作为拍摄时间`)
-  } else {
-        log?.warn(
-          `未知的 CreateDate 类型：${typeof createDate}`,
-          createDate,
+        log.info(
+          `${key}: 使用 EXIF CreateDate ${exifData?.CreateDate} 作为拍摄时间`,
         )
+      } else {
+        log?.warn(`未知的 CreateDate 类型：${typeof createDate}`, createDate)
       }
     } catch (error) {
-      log?.warn(
-        `解析 EXIF CreateDate 失败：${exifData.CreateDate}`,
-        error,
-      )
+      log?.warn(`解析 EXIF CreateDate 失败：${exifData.CreateDate}`, error)
     }
-  }else {
+  } else {
     // 如果 EXIF 中没有日期，尝试从文件名解析
     const dateMatch = fileName.match(/(\d{4}-\d{2}-\d{2})/)
     if (dateMatch) {
@@ -113,12 +109,40 @@ export function extractPhotoInfo(
     title = path.basename(key, path.extname(key))
   }
 
+  // 从 EXIF 数据中提取描述信息
+  let description = ''
+  if (exifData) {
+    // 优先使用 ImageDescription，其次是 Caption-Abstract，最后是 UserComment
+    if (
+      exifData.ImageDescription &&
+      typeof exifData.ImageDescription === 'string'
+    ) {
+      description = exifData.ImageDescription.trim()
+    } else if (
+      exifData['Caption-Abstract'] &&
+      typeof exifData['Caption-Abstract'] === 'string'
+    ) {
+      description = exifData['Caption-Abstract'].trim()
+    } else if (
+      exifData.UserComment &&
+      typeof exifData.UserComment === 'string'
+    ) {
+      description = exifData.UserComment.trim()
+    }
+
+    if (description) {
+      log.info(
+        `从 EXIF 提取描述信息：${description.slice(0, 50)}${description.length > 50 ? '...' : ''}`,
+      )
+    }
+  }
+
   log.info(`照片信息提取完成："${title}"`)
 
   return {
     title,
     dateTaken,
     tags,
-    description: '', // 可以从 EXIF 或其他元数据中获取
+    description,
   }
 }
