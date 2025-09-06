@@ -32,12 +32,11 @@ const reactionButton = tv({
       'bg-gradient-to-br from-white/20 to-white/0',
       'transition-colors duration-300',
       'active:scale-95',
-      'disabled:cursor-not-allowed disabled:opacity-50',
+      'disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer',
     ],
     mainButtonIcon: 'text-lg',
     reactionsContainer: [
       'mb-4 flex relative items-center justify-center gap-2',
-
       'rounded-full border-white/20 !bg-black/70 p-2 shadow-2xl backdrop-blur-[70px]',
       'bg-gradient-to-br from-white/20 to-white/0',
       'select-none',
@@ -89,10 +88,9 @@ export const ReactionButton = ({
   photoId,
 }: ReactionButtonProps) => {
   const [panelElement, setPanelElement] = useState<HTMLDivElement | null>(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
   const styles = reactionButton()
   const { t } = useTranslation()
-
   const handleReaction = useCallback(
     async (reaction: (typeof reactions)[number]) => {
       await client.actReaction({
@@ -115,7 +113,7 @@ export const ReactionButton = ({
           })
         })
       })
-      setIsOpen(false)
+      // setIsOpen(false)
     },
     [handleReaction, mutate],
   )

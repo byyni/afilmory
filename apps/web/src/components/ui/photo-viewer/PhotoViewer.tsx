@@ -250,14 +250,9 @@ export const PhotoViewer = ({
                   {injectConfig.useApi && (
                     <ReactionButton
                       photoId={currentPhoto.id}
-                      className="absolute right-4 bottom-4"
+                      className="pointer-events-auto absolute right-50 bottom-20"
                     />
                   )}
-
-                  <ReactionButton
-                    photoId={currentPhoto.id}
-                    className="absolute right-4 bottom-4"
-                  />
 
                   {/* 加载指示器 */}
                   <LoadingIndicator ref={loadingIndicatorRef} />
