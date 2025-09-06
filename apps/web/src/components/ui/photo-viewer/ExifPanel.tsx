@@ -160,11 +160,16 @@ export const ExifPanel: FC<{
                   value={formattedExifData.copyright}
                 />
               )}
-
               {formattedExifData?.software && (
                 <Row
                   label={t('exif.software')}
                   value={formattedExifData.software}
+                />
+              )}
+              {currentPhoto.description && (
+                <Row
+                  label={t('tmt.description')}
+                  value={currentPhoto.description}
                 />
               )}
             </div>
