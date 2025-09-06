@@ -1,5 +1,7 @@
 import { atom } from 'jotai'
 
+import { isMobile } from '../hooks/useMobile'
+
 export type GallerySortBy = 'date'
 export type GallerySortOrder = 'asc' | 'desc'
 
@@ -16,7 +18,7 @@ export const gallerySettingAtom = atom({
   lensSearchQuery: '' as string, // Lens search query
   ratingSearchQuery: '' as string, // Rating search query
   isTagsPanelOpen: false as boolean,
-  columns: 5 as number | 'auto', // 自定义列数，auto 表示自动计算
+  columns: isMobile() ? ('auto' as const) : 5, // 自定义列数，移动端使用auto，其他设备使用5
 })
 
 export const isExiftoolLoadedAtom = atom(false)
