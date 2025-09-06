@@ -17,5 +17,12 @@
     "gitee": "tanmantang/afilmory",
     "douyin": "https://douyin.com",
     "rss": true
+  },
+  "storage": {
+    "provider": "s3",
+    "bucket": "tanmantang",
+    "region": "oss-cn-chengdu",
+    "prefix": "afilmory/",
+    "endpoint": "https://oss-cn-chengdu.aliyuncs.com"
   }
 }

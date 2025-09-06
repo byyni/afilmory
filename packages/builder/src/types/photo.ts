@@ -98,17 +98,19 @@ export interface PickedExif {
   // 光源和闪光灯
   LightSource?: string
   Flash?: string
+
   // 描述相关字段
-  UserComment?: string
+  XPTitle?: string // 这是标题
+  XPComment?: string // 这是备注
+  XPSubject?: string // 这是主题
   ImageDescription?: string
-  'Caption-Abstract'?: string
+  XPKeywords?: string // 这是标签，多个标签用分号分隔
 
   // 焦距相关
   FocalLength?: string
   FocalLengthIn35mmFormat?: string
 
   // 镜头相关
-
   LensMake?: string
   LensModel?: string
 

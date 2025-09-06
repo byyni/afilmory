@@ -17,31 +17,37 @@ export function extractPhotoInfo(
   const fileName = path.basename(key, path.extname(key))
 
   // 尝试从文件名解析信息，格式示例："2024-01-15_城市夜景_1250views"
-  let title = fileName
   let dateTaken = new Date().toISOString()
-  let views = 0
   let tags: string[] = []
 
-  // 从目录路径中提取 tags
-  const dirPath = path.dirname(key)
-  if (dirPath && dirPath !== '.' && dirPath !== '/') {
-    // 移除前缀（如果有的话）
-    let relativePath = dirPath
-    if (env.S3_PREFIX && dirPath.startsWith(env.S3_PREFIX)) {
-      relativePath = dirPath.slice(env.S3_PREFIX.length)
-    }
+  // 优先从 EXIF 数据中提取 XPKeywords 作为标签
+  if (exifData?.XPKeywords && typeof exifData.XPKeywords === 'string') {
+    tags = exifData.XPKeywords.split(';')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== '')
+    log.info(`从 EXIF XPKeywords 提取标签：[${tags.join(', ')}]`)
+  } else {
+    // 如果没有 XPKeywords，则从目录路径中提取 tags
+    const dirPath = path.dirname(key)
+    if (dirPath && dirPath !== '.' && dirPath !== '/') {
+      // 移除前缀（如果有的话）
+      let relativePath = dirPath
+      if (env.S3_PREFIX && dirPath.startsWith(env.S3_PREFIX)) {
+        relativePath = dirPath.slice(env.S3_PREFIX.length)
+      }
 
-    // 清理路径分隔符
-    relativePath = relativePath.replaceAll(/^\/+|\/+$/g, '')
+      // 清理路径分隔符
+      relativePath = relativePath.replaceAll(/^\/+|\/+$/g, '')
 
-    if (relativePath) {
-      // 分割路径并过滤空字符串
-      const pathParts = relativePath
-        .split('/')
-        .filter((part) => part.trim() !== '')
-      tags = pathParts.map((part) => part.trim())
+      if (relativePath) {
+        // 分割路径并过滤空字符串
+        const pathParts = relativePath
+          .split('/')
+          .filter((part) => part.trim() !== '')
+        tags = pathParts.map((part) => part.trim())
 
-      log.info(`从路径提取标签：[${tags.join(', ')}]`)
+        log.info(`从路径提取标签：[${tags.join(', ')}]`)
+      }
     }
   }
 
@@ -90,57 +96,30 @@ export function extractPhotoInfo(
     }
   }
 
-  // 如果文件名包含浏览次数
-  const viewsMatch = fileName.match(/(\d+)views?/i)
-  if (viewsMatch) {
-    views = Number.parseInt(viewsMatch[1])
-    log.info(`从文件名提取浏览次数：${views}`)
-  }
-
-  // 从文件名中提取标题（移除日期和浏览次数）
-  title = fileName
-    .replaceAll(/\d{4}-\d{2}-\d{2}[_-]?/g, '')
-    .replaceAll(/[_-]?\d+views?/gi, '')
-    .replaceAll(/[_-]+/g, ' ')
-    .trim()
-
-  // 如果标题为空，使用文件名
-  if (!title) {
-    title = path.basename(key, path.extname(key))
-  }
-
   // 从 EXIF 数据中提取描述信息
   let description = ''
   if (exifData) {
-    // 优先使用 ImageDescription，其次是 Caption-Abstract，最后是 UserComment
-    if (
+    // 优先使用 XPTitle(标题)，其次是 XPComment(备注)，XPSubject(主题)， 最后是 ImageDescription
+    if (exifData.XPTitle && typeof exifData.XPTitle === 'string') {
+      description = exifData.XPTitle.trim()
+    } else if (exifData.XPSubject && typeof exifData.XPSubject === 'string') {
+      description = exifData.XPSubject.trim()
+    } else if (exifData.XPComment && typeof exifData.XPComment === 'string') {
+      description = exifData.XPComment.trim()
+    } else if (
       exifData.ImageDescription &&
       typeof exifData.ImageDescription === 'string'
     ) {
       description = exifData.ImageDescription.trim()
-    } else if (
-      exifData['Caption-Abstract'] &&
-      typeof exifData['Caption-Abstract'] === 'string'
-    ) {
-      description = exifData['Caption-Abstract'].trim()
-    } else if (
-      exifData.UserComment &&
-      typeof exifData.UserComment === 'string'
-    ) {
-      description = exifData.UserComment.trim()
-    }
-
-    if (description) {
-      log.info(
-        `从 EXIF 提取描述信息：${description.slice(0, 50)}${description.length > 50 ? '...' : ''}`,
-      )
+    } else {
+      // 如果没有可用的描述信息，使用文件名
+      // description = fileName
+      description = ''
     }
   }
 
-  log.info(`照片信息提取完成："${title}"`)
-
   return {
-    title,
+    title: fileName,
     dateTaken,
     tags,
     description,

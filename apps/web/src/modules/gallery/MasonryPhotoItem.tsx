@@ -4,10 +4,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Thumbhash } from '~/components/ui/thumbhash'
-import {
-  useContextPhotos,
-  usePhotoViewer,
-} from '~/hooks/usePhotoViewer'
+import { useContextPhotos, usePhotoViewer } from '~/hooks/usePhotoViewer'
 import {
   CarbonIsoOutline,
   MaterialSymbolsShutterSpeed,
@@ -18,6 +15,7 @@ import { isMobileDevice } from '~/lib/device-viewport'
 import { ImageLoaderManager } from '~/lib/image-loader-manager'
 import { getImageFormat } from '~/lib/image-utils'
 import type { PhotoManifest } from '~/types/photo'
+
 import { formatDateTime } from '../../components/ui/photo-viewer/formatExifData'
 
 export const MasonryPhotoItem = ({
@@ -240,7 +238,7 @@ export const MasonryPhotoItem = ({
         <img
           ref={imageRef}
           src={data.thumbnailUrl}
-          alt={data.title}
+          alt={data.description || ''}
           className={clsx(
             'absolute inset-0 h-full w-full object-cover duration-300 group-hover:scale-105',
           )}
@@ -322,13 +320,49 @@ export const MasonryPhotoItem = ({
             {/* 基本信息和标签 section */}
             <div className="mb-3 [&_*]:duration-300">
               <h3 className="mb-2 truncate text-sm font-medium opacity-0 group-hover:opacity-100">
-                {data.title}
+                {data.description}
               </h3>
-              {data.description && (
-                <p className="mb-2 line-clamp-2 text-sm text-white/80 opacity-0 group-hover:opacity-100">
-                  {data.description}
-                </p>
-              )}
+              {/* 检查是否有与description不同的EXIF文本信息 */}
+              {(() => {
+                // 找到与data.description不同的EXIF字段值，按照优先级顺序
+                const getDifferentExifValue = () => {
+                  if (
+                    data.exif?.XPTitle &&
+                    data.exif?.XPTitle !== data.description
+                  ) {
+                    return data.exif.XPTitle
+                  }
+                  if (
+                    data.exif?.XPSubject &&
+                    data.exif?.XPSubject !== data.description
+                  ) {
+                    return data.exif.XPSubject
+                  }
+                  if (
+                    data.exif?.XPComment &&
+                    data.exif?.XPComment !== data.description
+                  ) {
+                    return data.exif.XPComment
+                  }
+                  if (
+                    data.exif?.ImageDescription &&
+                    data.exif?.ImageDescription !== data.description
+                  ) {
+                    return data.exif.ImageDescription
+                  }
+                  return null
+                }
+
+                const differentValue = getDifferentExifValue()
+
+                return (
+                  differentValue && (
+                    <p className="mb-2 line-clamp-2 text-sm text-white/80 opacity-0 group-hover:opacity-100">
+                      {differentValue}
+                    </p>
+                  )
+                )
+              })()}
 
               {/* 基本信息 */}
               <div className="mb-2 flex flex-wrap gap-2 text-xs text-white/80 opacity-0 group-hover:opacity-100">
@@ -341,7 +375,9 @@ export const MasonryPhotoItem = ({
                 <span>{(data.size / 1024 / 1024).toFixed(1)}MB</span>
                 {data.exif?.DateTimeOriginal && (
                   <span>
-                    {formatDateTime(new Date(data.exif?.DateTimeOriginal || ''))}
+                    {formatDateTime(
+                      new Date(data.exif?.DateTimeOriginal || ''),
+                    )}
                   </span>
                 )}
               </div>

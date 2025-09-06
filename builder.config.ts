@@ -1,5 +1,4 @@
 import cluster from 'node:cluster'
-import { existsSync, readFileSync } from 'node:fs'
 import os from 'node:os'
 import { inspect } from 'node:util'
 
@@ -7,6 +6,7 @@ import type { StorageConfig } from '@afilmory/builder'
 import consola from 'consola'
 import { merge } from 'es-toolkit'
 
+import userConfig from './config.json'
 import { env } from './env.js'
 
 export interface BuilderConfig {
@@ -120,18 +120,15 @@ export const defaultBuilderConfig: BuilderConfig = {
 }
 
 const readUserConfig = () => {
-  const isUserConfigExist = existsSync(
-    new URL('builder.config.json', import.meta.url),
-  )
-  if (!isUserConfigExist) {
-    return defaultBuilderConfig
+  // 从 config.json 中提取 storage 配置
+  const storageConfig = userConfig.storage || {}
+
+  // 创建要合并的配置对象
+  const configToMerge = {
+    storage: storageConfig,
   }
 
-  const userConfig = JSON.parse(
-    readFileSync(new URL('builder.config.json', import.meta.url), 'utf-8'),
-  ) as BuilderConfig
-
-  return merge(defaultBuilderConfig, userConfig)
+  return merge(defaultBuilderConfig, configToMerge)
 }
 
 export const builderConfig: BuilderConfig = readUserConfig()

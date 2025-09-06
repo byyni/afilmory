@@ -132,8 +132,12 @@ const pickKeys: Array<keyof Tags | (string & {})> = [
   'MPImageType',
   // 描述相关字段
   'UserComment',
-  'ImageDescription',
   'Caption-Abstract',
+  'XPTitle', // 标题
+  'XPComment', // 备注
+  'ImageDescription',
+  'XPKeywords', // 标签
+  'XPSubject', // 主题
 ]
 function handleExifData(exifData: Tags, metadata: Metadata): PickedExif {
   const date = {
