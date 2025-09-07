@@ -4,6 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { Drawer } from 'vaul'
 
+import type {
+  MainSupportedLanguages} from '~/@types/constants';
+import {
+  currentSupportedLanguages
+} from '~/@types/constants'
 import { gallerySettingAtom } from '~/atoms/app'
 import { FilterPanel } from '~/components/gallery/FilterPanel'
 import { Button } from '~/components/ui/button'
@@ -14,6 +19,7 @@ import {
 } from '~/components/ui/dropdown-menu'
 import { Slider } from '~/components/ui/slider'
 import { useMobile } from '~/hooks/useMobile'
+import { getI18n } from '~/i18n'
 import { clsxm } from '~/lib/cn'
 
 const SortPanel = () => {
@@ -56,6 +62,61 @@ const SortPanel = () => {
           <i className="i-mingcute-check-line ml-auto" />
         )}
       </div>
+    </div>
+  )
+}
+
+// 语言选择面板
+const LanguagePanel = () => {
+  const { t } = useTranslation()
+  const [gallerySetting, setGallerySetting] = useAtom(gallerySettingAtom)
+
+  // 语言映射表，用于显示语言名称
+  const languageMap: Record<string, string> = {
+    'zh-CN': '简体中文',
+    en: 'English',
+    'zh-HK': '繁体中文(香港)',
+    'zh-TW': '繁体中文(台湾)',
+    jp: '日本語',
+    ko: '한국어',
+  }
+
+  const setLanguage = (lang: MainSupportedLanguages) => {
+    // 更新gallerySetting中的语言设置
+    setGallerySetting({
+      ...gallerySetting,
+      language: lang,
+    })
+
+    // 更新i18next的语言
+    getI18n().changeLanguage(lang)
+  }
+
+  return (
+    <div className="pb-safe flex flex-col gap-2 p-0 lg:gap-0 lg:pt-0 lg:pb-0 lg:text-sm">
+      <h3 className="flex h-6 items-center px-2 text-sm font-medium lg:h-8">
+        {t('tmt.language.select')}
+      </h3>
+      <div className="bg-border mx-2 my-1 h-px" />
+      {[
+        'zh-CN' as MainSupportedLanguages,
+        ...(currentSupportedLanguages as MainSupportedLanguages[]).filter(
+          (lang) => lang !== 'zh-CN',
+        ),
+      ].map((lang) => (
+        <div
+          key={lang}
+          className={clsxm(
+            'hover:bg-accent/50 flex cursor-pointer items-center gap-2 rounded-md bg-transparent px-2 py-3 transition-colors hover:backdrop-blur-3xl lg:py-1',
+          )}
+          onClick={() => setLanguage(lang)}
+        >
+          <span>{languageMap[lang] || lang}</span>
+          {gallerySetting.language === lang && (
+            <i className="i-mingcute-check-line ml-auto" />
+          )}
+        </div>
+      ))}
     </div>
   )
 }
@@ -277,6 +338,14 @@ export const ActionGroup = () => {
     }))
   }
 
+  // 从当前语言代码中提取简写（例如 zh-CN -> cn）
+  const getLanguageShort = (lang: string) => {
+    const parts = lang.split('-')
+    return parts.length > 1
+      ? parts[1].toLowerCase()
+      : lang.slice(0, 2).toLowerCase()
+  }
+
   return (
     <div className="flex items-center justify-center gap-3">
       {/* 地图探索按钮 */}
@@ -316,7 +385,10 @@ export const ActionGroup = () => {
         icon="i-mingcute-grid-line"
         title={t('action.columns.setting')}
         badge={
-          gallerySetting.columns !== 'auto' ? gallerySetting.columns : undefined
+          // gallerySetting.columns !== 'auto' ? gallerySetting.columns : undefined
+          gallerySetting.columns !== 6 && gallerySetting.columns !== 'auto'
+            ? gallerySetting.columns
+            : undefined
         }
       >
         <ColumnsPanel />
@@ -334,6 +406,21 @@ export const ActionGroup = () => {
       >
         <SortPanel />
       </ResponsiveActionButton>
+
+      {/* 语言选择按钮 */}
+      <ResponsiveActionButton
+        icon="i-mingcute-globe-2-line"
+        title={t('tmt.language.select')}
+        // badge={getLanguageShort(gallerySetting.language)}
+        badge={
+          gallerySetting.language === 'zh-CN'
+            ? undefined
+            : getLanguageShort(gallerySetting.language)
+        }
+        contentClassName="w-48"
+      >
+        <LanguagePanel />
+      </ResponsiveActionButton>
     </div>
   )
 }
@@ -342,6 +429,7 @@ const panelMap = {
   sort: SortPanel,
   tags: FilterPanel,
   columns: ColumnsPanel,
+  language: LanguagePanel,
 }
 
 export type PanelType = keyof typeof panelMap

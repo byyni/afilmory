@@ -22,15 +22,15 @@ export const MasonryHeaderMasonryItem = ({
   // 获取最新图片的拍摄时间
   const photos = usePhotos()
   const visiblePhotoCount = photos.length
-  
+
   const getLatestPhotoDate = () => {
     if (!photos || photos.length === 0) return null
-    
+
     // 找到有DateTimeOriginal的照片并排序
-    const photosWithDate = photos.filter(photo => 
-      photo.exif && photo.exif.DateTimeOriginal
+    const photosWithDate = photos.filter(
+      (photo) => photo.exif && photo.exif.DateTimeOriginal,
     )
-    
+
     if (photosWithDate.length > 0) {
       // 按DateTimeOriginal降序排序，获取最新的一张
       photosWithDate.sort((a, b) => {
@@ -40,11 +40,11 @@ export const MasonryHeaderMasonryItem = ({
       })
       return photosWithDate[0].exif!.DateTimeOriginal
     }
-    
+
     // 如果没有DateTimeOriginal，回退到CreateDate
     return photos[0].exif?.CreateDate || photos[0].lastModified
   }
-  
+
   const latestPhotoDate = getLatestPhotoDate()
 
   return (
@@ -110,7 +110,15 @@ export const MasonryHeaderMasonryItem = ({
                 className="text-text-secondary flex items-center justify-center p-2 duration-200 hover:text-[#E7E8E8]"
                 title="Gitee"
               >
-                <svg viewBox="0 0 1024 1024" fill="currentColor" width={12} height={12} xmlns="http://www.w3.org/2000/svg"><path d="M896.3052803 427.59336267H465.08398823c-20.69630173 0-37.49062554 16.79432382-37.49062556 37.49062555l-0.02636472 93.75292941c0 20.69630173 16.76795911 37.49062554 37.49062556 37.51699027h262.51347546c20.69630173 0 37.49062554 16.79432382 37.49062555 37.49062638v18.74531277a112.49824219 112.49824219 0 0 1-112.49824219 112.49824219H296.32344217a37.49062554 37.49062554 0 0 1-37.49062554-37.49062556V371.38378824a112.49824219 112.49824219 0 0 1 112.49824218-112.49824219L896.22618615 258.85918133c20.69630173 0 37.49062554-16.76795911 37.49062557-37.46426165L933.79590585 127.64199027h0.02636472A37.49062554 37.49062554 0 0 0 896.35800973 90.125h-0.02636471L371.38378824 90.15136472C216.06924714 90.15136472 90.15136472 216.06924714 90.15136472 371.38378824v524.94785678c0 20.69630173 16.79432382 37.49062554 37.49062555 37.49062555h553.07900829a253.101272 253.101272 0 0 0 253.10127201-253.10127201v-215.61064563c0-20.69630173-16.79432382-37.49062554-37.49062555-37.49062554z"></path></svg>
+                <svg
+                  viewBox="0 0 1024 1024"
+                  fill="currentColor"
+                  width={12}
+                  height={12}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M896.3052803 427.59336267H465.08398823c-20.69630173 0-37.49062554 16.79432382-37.49062556 37.49062555l-0.02636472 93.75292941c0 20.69630173 16.76795911 37.49062554 37.49062556 37.51699027h262.51347546c20.69630173 0 37.49062554 16.79432382 37.49062555 37.49062638v18.74531277a112.49824219 112.49824219 0 0 1-112.49824219 112.49824219H296.32344217a37.49062554 37.49062554 0 0 1-37.49062554-37.49062556V371.38378824a112.49824219 112.49824219 0 0 1 112.49824218-112.49824219L896.22618615 258.85918133c20.69630173 0 37.49062554-16.76795911 37.49062557-37.46426165L933.79590585 127.64199027h0.02636472A37.49062554 37.49062554 0 0 0 896.35800973 90.125h-0.02636471L371.38378824 90.15136472C216.06924714 90.15136472 90.15136472 216.06924714 90.15136472 371.38378824v524.94785678c0 20.69630173 16.79432382 37.49062554 37.49062555 37.49062555h553.07900829a253.101272 253.101272 0 0 0 253.10127201-253.10127201v-215.61064563c0-20.69630173-16.79432382-37.49062554-37.49062555-37.49062554z" />
+                </svg>
               </a>
             )}
             {siteConfig.social.douyin && (
@@ -165,24 +173,34 @@ export const MasonryHeaderMasonryItem = ({
             {/* <i className="i-mingcute-calendar-line text-sm" /> */}
             <i className="i-mingcute-photo-album-line text-sm" />
             <span>
-              {t('tmt.update.at')}
-              {latestPhotoDate ? new Date(latestPhotoDate).toLocaleDateString(i18n.language, { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Shanghai' }) : ''}
+              {`${t('tmt.update.at')  } `}
+              {latestPhotoDate
+                ? new Date(latestPhotoDate).toLocaleDateString(i18n.language, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: '2-digit',
+                    timeZone: 'Asia/Shanghai',
+                  })
+                : ''}
             </span>
           </div>
-          {/* <div className="flex items-center gap-2">
-            <i className="i-mingcute-photo-album-line text-sm" />
-            <span>
-              点开图片详情可以点赞哦
-            </span>
-          </div> */}
           <div className="flex items-center gap-2">
             <i className="i-mingcute-code-line text-sm" />
             <span>
-              {t('tmt.build.at')}
+              {`${t('tmt.build.at')  } `}
               {
-              <a href={`${repository.url}/commit/${GIT_COMMIT_HASH}`} target="_blank" rel="noreferrer" className="text-gray-500 dark:text-gray-400 hover:text-[#E7E8E8] underline">
-                  {new Date(BUILT_DATE).toLocaleDateString(i18n.language, { year: 'numeric', month: 'long', day: 'numeric' })}
-              </a>
+                <a
+                  href={`${repository.url}/commit/${GIT_COMMIT_HASH}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-gray-500 underline hover:text-[#E7E8E8] dark:text-gray-400"
+                >
+                  {new Date(BUILT_DATE).toLocaleDateString(i18n.language, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: '2-digit',
+                  })}
+                </a>
               }
               {/* {GIT_COMMIT_HASH && (
                 <span className="ml-1">
