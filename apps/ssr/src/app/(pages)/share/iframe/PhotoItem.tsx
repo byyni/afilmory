@@ -93,7 +93,7 @@ export function PhotoItem({ photo, className }: PhotoItemProps) {
           'pointer-events-none absolute inset-0 z-[1] flex items-start justify-center',
         )}
       >
-        <div className="bg-material-medium mt-4 flex items-center gap-2 rounded-full border border-white/20 px-3 py-1.5 opacity-0 backdrop-blur-[70px] transition-opacity duration-300 group-hover:opacity-100">
+        <div className="bg-material-medium light:border-black/20 mt-4 flex items-center gap-2 rounded-full border px-3 py-1.5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:border-white/20">
           <i className="i-mingcute-external-link-line size-4 text-white" />
           <span className="text-sm text-white/80">Open in AFilmory</span>
         </div>

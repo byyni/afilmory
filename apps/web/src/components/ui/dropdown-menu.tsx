@@ -58,7 +58,7 @@ const DropdownMenuContent = ({
         ref={ref}
         sideOffset={sideOffset}
         className={clsxm(
-          'bg-material-medium backdrop-blur-[70px] text-text shadow z-[60] min-w-32 overflow-hidden rounded-[6px] border border-border p-1',
+          'bg-material-medium backdrop-blur-[70px] text-text shadow z-[60] min-w-32 overflow-hidden rounded-[6px] border-border p-1 light:bg-white/50',
           className,
         )}
         {...props}

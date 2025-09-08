@@ -4,11 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { Drawer } from 'vaul'
 
-import type {
-  MainSupportedLanguages} from '~/@types/constants';
-import {
-  currentSupportedLanguages
-} from '~/@types/constants'
+import type { MainSupportedLanguages } from '~/@types/constants'
+import { currentSupportedLanguages } from '~/@types/constants'
 import { gallerySettingAtom } from '~/atoms/app'
 import { FilterPanel } from '~/components/gallery/FilterPanel'
 import { Button } from '~/components/ui/button'
@@ -22,6 +19,7 @@ import { useMobile } from '~/hooks/useMobile'
 import { getI18n } from '~/i18n'
 import { clsxm } from '~/lib/cn'
 
+// 排序面板
 const SortPanel = () => {
   const { t } = useTranslation()
   const [gallerySetting, setGallerySetting] = useAtom(gallerySettingAtom)
@@ -121,6 +119,7 @@ const LanguagePanel = () => {
   )
 }
 
+// 列设置面板
 const ColumnsPanel = () => {
   const { t } = useTranslation()
   const [gallerySetting, setGallerySetting] = useAtom(gallerySettingAtom)
@@ -450,8 +449,8 @@ export const ActionPanel = ({
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm" />
-        <Drawer.Content className="fixed right-0 bottom-0 left-0 z-50 flex flex-col rounded-t-2xl border-t border-zinc-200 bg-white/80 p-4 backdrop-blur-xl dark:border-zinc-800 dark:bg-black/80">
-          <div className="mx-auto mb-4 h-1.5 w-12 flex-shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+        <Drawer.Content className="light:bg-white/80 fixed right-0 bottom-0 left-0 z-50 flex flex-col rounded-t-2xl border-t border-zinc-200 bg-white/80 p-4 backdrop-blur-xl dark:border-zinc-800 dark:bg-black/80">
+          <div className="light:bg-zinc-700 mx-auto mb-4 h-1.5 w-12 flex-shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700" />
           {Panel && <Panel />}
         </Drawer.Content>
       </Drawer.Portal>

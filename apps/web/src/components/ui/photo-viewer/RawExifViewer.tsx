@@ -344,7 +344,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
           type="button"
           onClick={handleOpenModal}
           disabled={isLoading}
-          className="cursor-pointer text-white/70 duration-200 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="light:text-black/70 light:hover:text-black cursor-pointer duration-200 disabled:cursor-not-allowed disabled:opacity-50 dark:text-white/70 dark:hover:text-white"
         >
           {isLoading ? (
             <i className="i-mingcute-loading-3-line animate-spin" />
@@ -353,7 +353,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
           )}
         </button>
       </DialogTrigger>
-      <DialogContent className="flex h-[80vh] max-w-4xl flex-col gap-2 text-white">
+      <DialogContent className="light:text-black flex h-[80vh] max-w-4xl flex-col gap-2 dark:text-white">
         <DialogHeader>
           <DialogTitle>
             {t('exif.raw.title', { defaultValue: 'Raw EXIF Data' })}
@@ -367,7 +367,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
         </DialogHeader>
 
         {isLoading && (
-          <div className="flex h-full grow flex-col items-center justify-center gap-4 text-white/70">
+          <div className="light:text-black/70 flex h-full grow flex-col items-center justify-center gap-4 dark:text-white/70">
             <i className="i-mingcute-loading-3-line animate-spin text-3xl" />
             <span className="text-sm">
               {t('exif.raw.loading', {
@@ -386,7 +386,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Basic File Information */}
             {getCategoryData(categories.basic).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.basic', {
                     defaultValue: 'File Information',
                   })}
@@ -402,7 +402,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Camera Information */}
             {getCategoryData(categories.camera).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.camera', {
                     defaultValue: 'Camera Information',
                   })}
@@ -418,7 +418,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Exposure Settings */}
             {getCategoryData(categories.exposure).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.exposure', {
                     defaultValue: 'Exposure Settings',
                   })}
@@ -434,7 +434,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Lens Information */}
             {getCategoryData(categories.lens).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.lens', {
                     defaultValue: 'Lens Information',
                   })}
@@ -450,7 +450,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Date & Time */}
             {getCategoryData(categories.datetime).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.datetime', {
                     defaultValue: 'Date & Time',
                   })}
@@ -466,7 +466,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* GPS Information */}
             {getCategoryData(categories.gps).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.gps', {
                     defaultValue: 'GPS Information',
                   })}
@@ -482,7 +482,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Focus System */}
             {getCategoryData(categories.focus).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.focus', {
                     defaultValue: 'Focus System',
                   })}
@@ -498,7 +498,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Flash & Lighting */}
             {getCategoryData(categories.flash).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.flash', {
                     defaultValue: 'Flash & Lighting',
                   })}
@@ -514,7 +514,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Image Properties */}
             {getCategoryData(categories.imageProperties).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.imageProperties', {
                     defaultValue: 'Image Properties',
                   })}
@@ -536,7 +536,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* White Balance */}
             {getCategoryData(categories.whiteBalance).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.whiteBalance', {
                     defaultValue: 'White Balance',
                   })}
@@ -558,7 +558,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Fuji Recipe */}
             {getCategoryData(categories.fuji).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.fuji', {
                     defaultValue: 'Fuji Film Simulation',
                   })}
@@ -574,7 +574,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Technical Parameters */}
             {getCategoryData(categories.technical).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.technical', {
                     defaultValue: 'Technical Parameters',
                   })}
@@ -590,7 +590,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Video/HEIF Properties */}
             {getCategoryData(categories.video).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.video', {
                     defaultValue: 'Video/HEIF Properties',
                   })}
@@ -606,7 +606,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Face Detection */}
             {getCategoryData(categories.faceDetection).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.faceDetection', {
                     defaultValue: 'Face Detection',
                   })}
@@ -628,7 +628,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Other Data */}
             {getCategoryData(categories.other).length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.other', {
                     defaultValue: 'Other Metadata',
                   })}
@@ -644,7 +644,7 @@ export const RawExifViewer: React.FC<RawExifViewerProps> = ({
             {/* Uncategorized Data */}
             {getUncategorizedData().length > 0 && (
               <div>
-                <h4 className="mb-3 border-b border-white/25 pb-2 text-sm font-semibold text-white/90">
+                <h4 className="light:border-black/25 light:text-black/90 mb-3 border-b pb-2 text-sm font-semibold dark:border-white/25 dark:text-white/90">
                   {t('exif.raw.category.uncategorized', {
                     defaultValue: 'Uncategorized',
                   })}

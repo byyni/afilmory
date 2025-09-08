@@ -6,9 +6,7 @@ import { gallerySettingAtom } from '~/atoms/app'
 import { DateRangeIndicator } from '~/components/ui/date-range-indicator'
 import { useScrollViewElement } from '~/components/ui/scroll-areas/hooks'
 import { useMobile } from '~/hooks/useMobile'
-import {
-  useContextPhotos,
-} from '~/hooks/usePhotoViewer'
+import { useContextPhotos } from '~/hooks/usePhotoViewer'
 import { useTypeScriptHappyCallback } from '~/hooks/useTypeScriptCallback'
 import { useVisiblePhotosDateRange } from '~/hooks/useVisiblePhotosDateRange'
 import { clsxm } from '~/lib/cn'
@@ -184,8 +182,8 @@ export const MasonryRoot = () => {
           )}
           onRender={handleRender}
           columnWidth={columnWidth}
-          columnGutter={4}
-          rowGutter={4}
+          columnGutter={8}
+          rowGutter={8}
           itemHeightEstimate={400}
           itemKey={useTypeScriptHappyCallback((data, _index) => {
             if (data instanceof MasonryHeaderItem) {
@@ -317,7 +315,7 @@ const FloatingActionBar = ({
           exit="initial"
           transition={Spring.presets.snappy}
           className={clsxm(
-            'border-material-opaque rounded-xl border bg-black/60 p-3 shadow-2xl backdrop-blur-[70px]',
+            'border-material-opaque rounded-xl dark:bg-black/60 light:bg-white/60 p-3 shadow-2xl backdrop-blur-[70px]',
             isMobile
               ? 'rounded-t-none rounded-br-none -translate-y-px'
               : 'fixed top-4 right-4 z-50 lg:top-6 lg:right-6',

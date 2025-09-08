@@ -5,6 +5,7 @@ import userConfig from './config.json'
 export interface SiteConfig {
   name: string
   title: string
+  model: string
   description: string
   url: string
   accentColor: string
@@ -46,6 +47,7 @@ interface Social {
 const defaultConfig: SiteConfig = {
   name: '懒洋洋喝咖啡',
   title: '懒洋洋喝咖啡',
+  model: 'dark',
   description: '记录生活中的美好瞬间，通过我的镜头记录每日的温暖和情感。',
   url: 'https://pix.tanmantang.com',
   accentColor: '#007bff',

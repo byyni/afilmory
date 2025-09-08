@@ -275,7 +275,7 @@ export const MasonryPhotoItem = ({
       {data.isLivePhoto && (
         <div
           className={clsx(
-            'absolute z-20 flex items-center space-x-1 rounded-xl bg-black/50 px-1 py-1 text-xs text-white transition-all duration-200 hover:bg-black/70',
+            'light:text-black light:hover:bg-white/70 absolute z-20 flex items-center space-x-1 rounded-xl bg-black/50 px-1 py-1 text-xs transition-all duration-200 dark:text-white dark:hover:bg-black/70',
             'top-2 left-2',
             'flex-wrap gap-y-1',
           )}
@@ -357,7 +357,7 @@ export const MasonryPhotoItem = ({
 
                 return (
                   differentValue && (
-                    <p className="mb-2 line-clamp-2 text-sm text-white/80 opacity-0 group-hover:opacity-100">
+                    <p className="light:text-black mb-2 line-clamp-2 text-sm opacity-0 group-hover:opacity-100 dark:text-white">
                       {differentValue}
                     </p>
                   )

@@ -10,7 +10,7 @@ import { cx, focusRing } from '~/lib/cn'
 
 const buttonVariants = tv({
   base: [
-    'relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-center font-medium transition-all duration-100 ease-in-out',
+    'relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-center font-medium transition-all duration-100 ease-in-out cursor-pointer',
     'disabled:pointer-events-none',
     focusRing,
   ],

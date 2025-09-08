@@ -95,7 +95,7 @@ export const MasonryHeaderMasonryItem = ({
                 href={`https://github.com/${siteConfig.social.github}`}
                 target="_blank"
                 rel="noreferrer"
-                className="text-text-secondary flex items-center justify-center p-2 duration-200 hover:text-[#E7E8E8]"
+                className="text-text-secondary light:hover:text-black flex items-center justify-center p-2 duration-200 dark:hover:text-[#E7E8E8]"
                 title="GitHub"
               >
                 <i className="i-mingcute-github-fill text-sm" />
@@ -106,8 +106,7 @@ export const MasonryHeaderMasonryItem = ({
                 href={`https://gitee.com/${siteConfig.social.gitee}`}
                 target="_blank"
                 rel="noreferrer"
-                //  #c71d23
-                className="text-text-secondary flex items-center justify-center p-2 duration-200 hover:text-[#E7E8E8]"
+                className="text-text-secondary light:hover:text-[#c71d23] flex items-center justify-center p-2 duration-200 dark:hover:text-[#E7E8E8]"
                 title="Gitee"
               >
                 <svg
@@ -126,7 +125,7 @@ export const MasonryHeaderMasonryItem = ({
                 href={`${siteConfig.social.douyin}`}
                 target="_blank"
                 rel="noreferrer"
-                className="text-text-secondary flex items-center justify-center p-2 duration-200 hover:text-[#E7E8E8]"
+                className="text-text-secondary light:hover:text-black flex items-center justify-center p-2 duration-200 dark:hover:text-[#E7E8E8]"
                 title={t('tmt.douyin')}
               >
                 <i className="i-mingcute-tiktok-fill text-sm" />
@@ -137,7 +136,7 @@ export const MasonryHeaderMasonryItem = ({
                 href={`https://twitter.com/${siteConfig.social.twitter.replace('@', '')}`}
                 target="_blank"
                 rel="noreferrer"
-                className="text-text-secondary flex items-center justify-center p-2 duration-200 hover:text-[#1da1f2]"
+                className="text-text-secondary light:hover:text-[#1da1f2] flex items-center justify-center p-2 duration-200 dark:hover:text-[#1da1f2]"
                 title="Twitter"
               >
                 <i className="i-mingcute-twitter-fill text-sm" />
@@ -147,7 +146,7 @@ export const MasonryHeaderMasonryItem = ({
               <a
                 href="/feed.xml"
                 target="_blank"
-                className="text-text-secondary flex items-center justify-center p-2 duration-200 hover:text-[#E7E8E8]" // #ec672c
+                className="text-text-secondary light:hover:text-[#ec672c] flex items-center justify-center p-2 duration-200 dark:hover:text-[#E7E8E8]" // #ec672c
                 title="RSS"
               >
                 <i className="i-mingcute-rss-2-fill text-sm" />
@@ -156,7 +155,8 @@ export const MasonryHeaderMasonryItem = ({
           </div>
         )}
 
-        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+        {/* <p className="text-sm font-medium text-gray-500 dark:text-gray-400"> */}
+        <p className="light:text-black/70 text-sm font-medium dark:text-gray-400">
           {t('gallery.photos', { count: visiblePhotoCount || 0 })}
         </p>
       </div>
@@ -168,12 +168,12 @@ export const MasonryHeaderMasonryItem = ({
       {/* Footer with build date */}
       {/* 图标网站连接 https://icon-sets.iconify.design/mingcute/ */}
       <div className="border-t border-gray-100 bg-gray-50 px-6 py-4 dark:border-gray-800 dark:bg-gray-800/50">
-        <div className="flex flex-col items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+        <div className="light:text-black/70 flex flex-col items-center justify-center gap-2 text-xs dark:text-gray-400">
           <div className="flex items-center gap-2">
             {/* <i className="i-mingcute-calendar-line text-sm" /> */}
             <i className="i-mingcute-photo-album-line text-sm" />
             <span>
-              {`${t('tmt.update.at')  } `}
+              {`${t('tmt.update.at')} `}
               {latestPhotoDate
                 ? new Date(latestPhotoDate).toLocaleDateString(i18n.language, {
                     year: 'numeric',
@@ -187,13 +187,13 @@ export const MasonryHeaderMasonryItem = ({
           <div className="flex items-center gap-2">
             <i className="i-mingcute-code-line text-sm" />
             <span>
-              {`${t('tmt.build.at')  } `}
+              {`${t('tmt.build.at')}`}
               {
                 <a
                   href={`${repository.url}/commit/${GIT_COMMIT_HASH}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-gray-500 underline hover:text-[#E7E8E8] dark:text-gray-400"
+                  className="light:text-black/70 light:hover:text-black/90 underline hover:text-[#E7E8E8] dark:text-gray-500"
                 >
                   {new Date(BUILT_DATE).toLocaleDateString(i18n.language, {
                     year: 'numeric',

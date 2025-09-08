@@ -330,7 +330,7 @@ export const FilterPanel = () => {
         {/* Reset all filters */}
         <Button
           variant="ghost"
-          className="opacity-80 pointer-events-auto"
+          className="pointer-events-auto opacity-80"
           size="xs"
           onClick={() => {
             setGallerySetting((prev) => ({
@@ -353,14 +353,14 @@ export const FilterPanel = () => {
       </div>
 
       {/* Tab Navigation - Improved spacing and layout */}
-      <div className="mb-2 flex rounded-lg bg-zinc-100 p-1 dark:bg-zinc-800">
+      <div className="light:bg-white/60 mb-2 flex rounded-lg p-1 dark:bg-zinc-200">
         {tabs.map((tab) => (
           <button
             type="button"
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={clsxm(
-              'min-w-0 flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-2.5 text-xs font-medium transition-all duration-200',
+              'min-w-0 flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-2.5 text-xs font-medium transition-all duration-200 cursor-pointer',
               activeTab === tab.id
                 ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-700 dark:text-white'
                 : 'text-zinc-600 hover:bg-zinc-200/50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-700/50 dark:hover:text-zinc-300',

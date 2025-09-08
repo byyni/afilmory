@@ -32,6 +32,10 @@
   --radius: 0.5rem;
   --border: 0 0% 22.1%;
 }
+[data-theme='light'] {
+  --radius: 0.5rem;
+  --border: 0 0% 22.1%;
+}
 
 @theme {
   /* Container */

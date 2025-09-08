@@ -14,7 +14,7 @@ interface DateRangeIndicatorProps {
 }
 
 export const DateRangeIndicator = memo(
-  ({ dateRange, location, isVisible, className }: DateRangeIndicatorProps) => {
+  ({ dateRange, isVisible, className }: DateRangeIndicatorProps) => {
     const { t } = useTranslation()
     const translateDay = (day: string | number) => t(`date.day.${day}` as any)
     const translateMonth = (month: string | number) =>
@@ -92,13 +92,13 @@ export const DateRangeIndicator = memo(
             exit={variants.initial}
             transition={Spring.presets.snappy}
             className={clsxm(
-              'border-material-opaque lg:rounded-xl border bg-black/60 p-4 shadow-2xl backdrop-blur-[70px]',
+              'border-material-opaque lg:rounded-xl dark:bg-black/60 light:bg-white/60 p-4 shadow-2xl backdrop-blur-[70px]',
               `fixed left-4 z-50 top-4 lg:top-6 lg:left-6`,
               className,
             )}
           >
             <div className="flex flex-col">
-              <span className="text-lg leading-tight font-bold tracking-tight text-white lg:text-4xl">
+              <span className="light:text-black text-lg leading-tight font-bold tracking-tight lg:text-4xl dark:text-white">
                 {formattedDate}
               </span>
               {/* {location && (

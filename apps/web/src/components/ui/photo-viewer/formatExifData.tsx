@@ -435,7 +435,9 @@ export const Row: FC<{
 }> = ({ label, value, ellipsis = false }) => {
   return (
     <div className="flex justify-between gap-4 text-sm">
-      <span className="text-text-secondary shrink-0">{label}</span>
+      <span className="text-text-secondary light:text-black/50 shrink-0 dark:text-white/50">
+        {label}
+      </span>
       {ellipsis ? (
         <span className="relative min-w-0 flex-1 shrink">
           <span className="absolute inset-0">

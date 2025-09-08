@@ -37,7 +37,7 @@ export default async function Page({
   }
 
   return (
-    <div className="h-screen bg-[#0a0a0a] text-white">
+    <div className="light:bg-[#fff] light:text-black h-screen dark:bg-[#0a0a0a] dark:text-white">
       <MasonryGallery photos={photos} />
     </div>
   )
