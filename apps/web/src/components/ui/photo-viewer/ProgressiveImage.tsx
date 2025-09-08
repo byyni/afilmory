@@ -9,7 +9,6 @@ import { useShowContextMenu } from '~/atoms/context-menu'
 import { clsxm } from '~/lib/cn'
 import { canUseWebGL } from '~/lib/feature'
 
-import { SlidingNumber } from '../number/SlidingNumber'
 import { DOMImageViewer } from './DOMImageViewer'
 import { HDRBadge } from './HDRBadge'
 import {
@@ -222,7 +221,7 @@ export const ProgressiveImage = ({
             exit={{ opacity: 0, y: 10 }}
             className="pointer-events-none absolute bottom-4 left-4 z-20 flex items-center gap-0.5 rounded bg-black/50 px-3 py-1 text-lg text-white tabular-nums"
           >
-            <SlidingNumber number={currentScale} decimalPlaces={1} />x
+            {t('tmt.zoom.hint', { zoom: currentScale.toFixed(1) })}
           </m.div>
         )}
       </AnimatePresence>

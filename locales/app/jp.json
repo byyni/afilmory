@@ -344,6 +344,7 @@
   "tmt.update.at": "更新日",
   "tmt.xiaohongshu": "レッドノート",
   "tmt.year": "年",
+  "tmt.zoom.hint": "{{zoom}}倍ズーム",
   "video.codec.keyword": "エンコーダー",
   "video.conversion.cached.result": "キャッシュされた結果を使用",
   "video.conversion.codec.fallback": "この解像度でサポートされている MP4 コーデックが見つかりません。WebM にフォールバックします。",

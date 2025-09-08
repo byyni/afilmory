@@ -351,6 +351,7 @@
   "tmt.update.at": "Gallery Updated at",
   "tmt.xiaohongshu": "rednote",
   "tmt.year": "-",
+  "tmt.zoom.hint": "Zoom {{zoom}}x",
   "video.codec.keyword": "Encoder",
   "video.conversion.cached.result": "Using cached result",
   "video.conversion.codec.fallback": "No MP4 codec found that supports this resolution. Falling back to WebM.",
