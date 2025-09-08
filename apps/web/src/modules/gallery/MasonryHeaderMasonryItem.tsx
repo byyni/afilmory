@@ -1,5 +1,4 @@
 import { siteConfig } from '@config'
-import { repository } from '@pkg'
 import * as AvatarPrimitive from '@radix-ui/react-avatar'
 import { useTranslation } from 'react-i18next'
 
@@ -190,7 +189,7 @@ export const MasonryHeaderMasonryItem = ({
               {`${t('tmt.build.at')}`}
               {
                 <a
-                  href={`${repository.url}/commit/${GIT_COMMIT_HASH}`}
+                  href={`${siteConfig.social?.github}/commit/${GIT_COMMIT_HASH}`}
                   target="_blank"
                   rel="noreferrer"
                   className="light:text-black/70 light:hover:text-black/90 underline hover:text-[#E7E8E8] dark:text-gray-500"
