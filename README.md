@@ -11,10 +11,12 @@ Afilmory (读音 /əˈfɪlməri/, "uh-FIL-muh-ree") 是一个为个人摄影网�
 
 一个现代化的照片画廊网站，使用 React + TypeScript 构建，支持从多个存储源（S3、GitHub）自动同步照片，具有高性能 WebGL 渲染、瀑布流布局、EXIF 信息显示、缩略图生成等功能。
 
+***注意***：本项目为原作者开源项目的 fork 版本，原作者开源地址：[https://github.com/Afilmory/afilmory](https://github.com/Afilmory/afilmory)
+
 在线照片画廊示例：
 
 - https://pix.tanmantang.com
-- https://afilmory.innei.in
+- https://afilmory.innei.in (作者)
 - https://gallery.mxte.cc
 - https://photography.pseudoyu.com
 - https://afilmory.magren.cc
@@ -27,8 +29,9 @@ Afilmory (读音 /əˈfɪlməri/, "uh-FIL-muh-ree") 是一个为个人摄影网�
 - 📱 **响应式瀑布流布局** - 基于 Masonic，适应不同屏幕尺寸
 - 🎨 **现代 UI 设计** - 使用 Tailwind CSS 和 Radix UI 组件库构建
 - ⚡ **增量同步** - 智能变更检测，仅处理新增或修改的照片
-- 🌐 **国际化** - 多语言支持
+- 🌐 **国际化** - 多语言支持 【新增页面选择翻译】
 - 🔗 **OpenGraph** - 社交媒体分享的 OpenGraph 元数据
+- 🌓 **暗色模式支持** - 支持配置文件级更换亮色/暗色模式 【新增】
 
 ### 图像处理
 
@@ -84,6 +87,7 @@ Afilmory (读音 /əˈfɪlməri/, "uh-FIL-muh-ree") 是一个为个人摄影网�
 ### Docker 部署
 
 [Docker 部署](https://github.com/Afilmory/docker)
+[vercel 部署](https://vercel.com/)
 
 ## ⚙️ 配置选项
 
@@ -158,6 +162,9 @@ pnpm run build:manifest -- --force-manifest
 ### 开发命令
 
 ```bash
+# 安装依赖
+pnpm install
+
 # 启动开发服务器
 pnpm dev
 
@@ -168,7 +175,7 @@ pnpm build
 ### 注意事项
 
 - 确保您的 S3 存储桶中已包含照片文件
-- 如果使用远程仓库，请先配置 `builder.config.json`
+- 如果使用远程仓库，请先配置 `config.json`
 
 ## 🔧 高级用法
 

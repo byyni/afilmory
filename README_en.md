@@ -11,10 +11,12 @@ Afilmory (/əˈfɪlməri/, "uh-FIL-muh-ree") is a term created for personal phot
 
 A modern photo gallery website built with React + TypeScript, supporting automatic photo synchronization from multiple storage sources (S3, GitHub), featuring high-performance WebGL rendering, masonry layout, EXIF information display, thumbnail generation, and more.
 
+***notice***: This project is a fork of the original author's open-source project. Original author's open-source address: [https://github.com/Afilmory/afilmory](https://github.com/Afilmory/afilmory)
+
 Live Photo Galleries:
 
 - https://pix.tanmantang.com
-- https://afilmory.innei.in
+- https://afilmory.innei.in （author）
 - https://gallery.mxte.cc
 - https://photography.pseudoyu.com
 - https://afilmory.magren.cc
@@ -27,8 +29,9 @@ Live Photo Galleries:
 - 📱 **Responsive Masonry Layout** - Powered by Masonic, adapts to different screen sizes
 - 🎨 **Modern UI Design** - Built with Tailwind CSS and Radix UI component library
 - ⚡ **Incremental Sync** - Smart change detection, processes only new or modified photos
-- 🌐 **i18n** - Multi-language support
+- 🌐 **i18n** - Multi-language support 【New: Page Translation Selection】
 - 🔗 **OpenGraph** - OpenGraph metadata for social media sharing
+- 🌓 **Dark Mode Support** - Configure light/dark mode at the configuration file level 【New】
 
 ### Image Processing
 
@@ -84,6 +87,7 @@ Designed with adapter pattern, supporting multiple storage backends:
 ### Docker Deployment
 
 [Docker Deployment](https://github.com/Afilmory/docker)
+[vercel Deployment](https://vercel.com/) not docs
 
 ## ⚙️ Configuration Options
 
@@ -158,6 +162,9 @@ pnpm run build:manifest -- --force-manifest
 ### Development Commands
 
 ```bash
+# Start install
+pnpm install
+
 # Start development server
 pnpm dev
 

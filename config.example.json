@@ -1,16 +1,29 @@
 {
-  "name": "Innei's Afilmory",
-  "title": "Innei's Afilmory",
-  "description": "Capturing beautiful moments in life, documenting daily warmth and emotions through my lens.",
-  "url": "https://afilmory.innei.in/",
-  "accentColor": "#007bff",
+  "name": "懒洋洋喝咖啡",
+  "title": "懒洋洋喝咖啡",
+  "model": "dark", 
+  "description": "记录生活中的美好瞬间，通过我的镜头记录每日的温暖和情感。",
+  "url": "https://pix.tanmantang.com",
   "author": {
-    "name": "Innei",
-    "url": "https://innei.in/",
-    "avatar": "https://cdn.jsdelivr.net/gh/Innei/static@master/avatar.png"
+    "name": "谭满堂",
+    "url": "https://tanmantang.com/",
+    "avatar": "yorlogo.png"
   },
   "map": [
     "maplibre"
   ],
-  "mapStyle": "builtin"
+  "mapStyle": "https://tiles.openfreemap.org/styles/liberty",
+  "social": {
+    "github": "tangmantan/afilmory",
+    "gitee": "tanmantang/afilmory",
+    "douyin": "https://douyin.com",
+    "rss": true
+  },
+  "storage": {
+    "provider": "s3",
+    "bucket": "yourbucket",
+    "region": "yourregion",
+    "prefix": "yourprefix",
+    "endpoint": "yourendpoint.com"
+  }
 }
