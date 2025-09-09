@@ -189,7 +189,7 @@ export const MasonryHeaderMasonryItem = ({
               {`${t('tmt.build.at')}`}
               {
                 <a
-                  href={`${siteConfig.social?.github}/commit/${GIT_COMMIT_HASH}`}
+                  href={`https://github.com/${siteConfig.social?.github}/commit/${GIT_COMMIT_HASH}`}
                   target="_blank"
                   rel="noreferrer"
                   className="light:text-black/70 light:hover:text-black/90 underline hover:text-[#E7E8E8] dark:text-gray-500"
