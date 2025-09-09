@@ -87,7 +87,10 @@ Afilmory (读音 /əˈfɪlməri/, "uh-FIL-muh-ree") 是一个为个人摄影网�
 ### Docker 部署
 
 [Docker 部署](https://github.com/Afilmory/docker)
-[vercel 部署](https://vercel.com/)
+
+### vercel 部署
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftangmantan%2Fafilmory&env=S3_ACCESS_KEY_ID,S3_SECRET_ACCESS_KEY,PG_CONNECTION_STRING&envDescription=S3%20or%20aliyunOSS%20ACCESS_KEY%20and%20postgresql%20connect%20string&project-name=afilmory&repository-name=afilmory&demo-title=%E6%87%92%E6%B4%8B%E6%B4%8B%E5%96%9D%E5%92%96%E5%95%A1&demo-description=%E6%87%92%E6%B4%8B%E6%B4%8B%E5%96%9D%E5%92%96%E5%95%A1&demo-url=https%3A%2F%2Fpix.tanmantang.com&demo-image=https%3A%2F%2Fgithub.com%2Ftangmantan%2Fafilmory%2Fblob%2Fmain%2Fafilmory-readme.webp)
 
 ## ⚙️ 配置选项
 
@@ -175,7 +178,8 @@ pnpm build
 ### 注意事项
 
 - 确保您的 S3 存储桶中已包含照片文件
-- 如果使用远程仓库，请先配置 `config.json`
+- 确保你的环境变量 .env 已配置，包括 `S3_ACCESS_KEY_ID`、`S3_SECRET_ACCESS_KEY`、`PG_CONNECTION_STRING`
+- `config.json` 中的storage配置项是必须的
 
 ## 🔧 高级用法
 

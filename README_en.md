@@ -87,7 +87,10 @@ Designed with adapter pattern, supporting multiple storage backends:
 ### Docker Deployment
 
 [Docker Deployment](https://github.com/Afilmory/docker)
-[vercel Deployment](https://vercel.com/) not docs
+
+### Vercel Deployment
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftangmantan%2Fafilmory&env=S3_ACCESS_KEY_ID,S3_SECRET_ACCESS_KEY,PG_CONNECTION_STRING&envDescription=S3%20or%20aliyunOSS%20ACCESS_KEY%20and%20postgresql%20connect%20string&project-name=afilmory&repository-name=afilmory&demo-title=%E6%87%92%E6%B4%8B%E6%B4%8B%E5%96%9D%E5%92%96%E5%95%A1&demo-description=%E6%87%92%E6%B4%8B%E6%B4%8B%E5%96%9D%E5%92%96%E5%95%A1&demo-url=https%3A%2F%2Fpix.tanmantang.com&demo-image=https%3A%2F%2Fgithub.com%2Ftangmantan%2Fafilmory%2Fblob%2Fmain%2Fafilmory-readme.webp)
 
 ## ⚙️ Configuration Options
 
@@ -175,7 +178,8 @@ pnpm build
 ### Notes
 
 - Ensure your S3 bucket already contains photo files
-- If using remote repository, configure `builder.config.json` first
+- Ensure your .env file is configured with `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, and `PG_CONNECTION_STRING`
+- The storage configuration in `config.json` is required
 
 ## 🔧 Advanced Usage
 
