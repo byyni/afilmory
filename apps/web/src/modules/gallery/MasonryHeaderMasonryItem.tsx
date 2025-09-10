@@ -186,7 +186,7 @@ export const MasonryHeaderMasonryItem = ({
           <div className="flex items-center gap-2">
             <i className="i-mingcute-code-line text-sm" />
             <span>
-              {`${t('tmt.build.at')}`}
+              {`${t('tmt.build.at')} `}
               {
                 <a
                   href={`https://github.com/${siteConfig.social?.github}/commit/${GIT_COMMIT_HASH}`}

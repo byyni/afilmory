@@ -1,6 +1,6 @@
 import { AnimatePresence, m } from 'motion/react'
 import type { FC } from 'react'
-import { useCallback, useRef } from 'react'
+import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { clsxm } from '~/lib/cn'
@@ -13,7 +13,6 @@ export const LivePhotoBadge: FC<LivePhotoBadgeProps> = ({
   isLivePhotoPlaying,
 }) => {
   const { t } = useTranslation()
-  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const handlePlay = useCallback(async () => {
     if (!livePhotoRef.current?.getIsVideoLoaded() || isLivePhotoPlaying) return
@@ -25,32 +24,36 @@ export const LivePhotoBadge: FC<LivePhotoBadgeProps> = ({
     livePhotoRef.current?.stop()
   }, [livePhotoRef, isLivePhotoPlaying])
 
-  // Desktop hover logic
-  const handleBadgeMouseEnter = useCallback(() => {
-    if (isMobileDevice) return
-    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
-    hoverTimerRef.current = setTimeout(handlePlay, 200)
-  }, [handlePlay])
+  const handleClick = useCallback(() => {
+    if (!livePhotoRef.current?.getIsVideoLoaded()) return
 
-  const handleBadgeMouseLeave = useCallback(() => {
-    if (isMobileDevice) return
-    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
-    handleStop()
-  }, [handleStop])
+    if (isLivePhotoPlaying) {
+      handleStop()
+    } else {
+      handlePlay()
+    }
+  }, [livePhotoRef, isLivePhotoPlaying, handlePlay, handleStop])
 
   return (
     <>
       {/* Live Photo 标识 */}
       <div
         className={clsxm(
-          'absolute z-20 flex items-center space-x-1 rounded-xl bg-black/50 px-1 py-1 text-xs text-white transition-all duration-200',
-          !isMobileDevice && 'cursor-pointer hover:bg-black/70',
+          'absolute z-20 flex items-center space-x-1 rounded-xl dark:bg-black/50 light:bg-white/50 px-1 py-1 text-xs dark:text-white light:text-black transition-all duration-200',
+          'cursor-pointer dark:hover:bg-black/70 light:hover:bg-white/70',
+          isLivePhotoPlaying && 'bg-accent/70 hover:bg-accent/80',
           import.meta.env.DEV ? 'top-16 right-4' : 'top-12 lg:top-4 left-4',
         )}
-        onMouseEnter={handleBadgeMouseEnter}
-        onMouseLeave={handleBadgeMouseLeave}
+        onClick={handleClick}
       >
-        <i className="i-mingcute-live-photo-line size-4" />
+        <i
+          className={clsxm(
+            'size-4',
+            isLivePhotoPlaying
+              ? 'i-mingcute-live-photo-fill'
+              : 'i-mingcute-live-photo-line',
+          )}
+        />
         <span className="mr-1">{t('photo.live.badge')}</span>
       </div>
 
@@ -63,8 +66,8 @@ export const LivePhotoBadge: FC<LivePhotoBadgeProps> = ({
             exit={{ opacity: 0 }}
             className="pointer-events-none absolute bottom-4 left-1/2 z-20 -translate-x-1/2"
           >
-            <div className="flex items-center gap-2 rounded bg-black/50 px-2 py-1 text-xs text-white">
-              <i className="i-mingcute-live-photo-line" />
+            <div className="light:bg-white/50 light:text-black flex items-center gap-2 rounded px-2 py-1 text-xs dark:bg-black/50 dark:text-white">
+              <i className="i-mingcute-live-photo-line light:text-black dark:text-white" />
               <span>{t('photo.live.playing')}</span>
             </div>
           </m.div>
