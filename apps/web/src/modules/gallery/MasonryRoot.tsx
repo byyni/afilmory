@@ -182,8 +182,9 @@ export const MasonryRoot = () => {
           )}
           onRender={handleRender}
           columnWidth={columnWidth}
-          columnGutter={8}
-          rowGutter={8}
+          // 改变该值会导致列数显示异常
+          columnGutter={4}
+          rowGutter={4}
           itemHeightEstimate={400}
           itemKey={useTypeScriptHappyCallback((data, _index) => {
             if (data instanceof MasonryHeaderItem) {
