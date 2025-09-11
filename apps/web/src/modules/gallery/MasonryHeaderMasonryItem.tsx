@@ -88,7 +88,7 @@ export const MasonryHeaderMasonryItem = ({
 
         {/* Social media links */}
         {siteConfig.social && (
-          <div className="mt-1 mb-3 flex items-center justify-center gap-3">
+          <div className="mt-1 mb-3 hidden items-center justify-center gap-3 sm:flex">
             {siteConfig.social.github && (
               <a
                 href={`https://github.com/${siteConfig.social.github}`}
@@ -183,7 +183,7 @@ export const MasonryHeaderMasonryItem = ({
                 : ''}
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-2 sm:flex">
             <i className="i-mingcute-code-line text-sm" />
             <span>
               {`${t('tmt.build.at')} `}

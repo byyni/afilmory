@@ -204,7 +204,7 @@ export const PhotoViewer = ({
                       {isMobile && (
                         <button
                           type="button"
-                          className={`bg-material-ultra-thick pointer-events-auto flex size-8 items-center justify-center rounded-full text-white backdrop-blur-2xl duration-200 hover:bg-black/40 ${showExifPanel ? 'bg-accent' : ''}`}
+                          className={`bg-material-ultra-thick light:text-black light:hover:bg-white/40 pointer-events-auto flex size-8 cursor-pointer items-center justify-center rounded-full backdrop-blur-2xl duration-200 dark:text-white dark:hover:bg-black/40 ${showExifPanel ? 'bg-accent' : ''}`}
                           onClick={() => setShowExifPanel(!showExifPanel)}
                         >
                           <i className="i-mingcute-information-line" />

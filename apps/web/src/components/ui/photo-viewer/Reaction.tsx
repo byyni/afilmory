@@ -1,13 +1,10 @@
 import { FluentEmoji, getEmoji } from '@lobehub/fluent-emoji'
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { produce } from 'immer'
 import { AnimatePresence, m } from 'motion/react'
-import type { RefObject } from 'react'
 import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { tv } from 'tailwind-variants'
-import { useOnClickOutside } from 'usehooks-ts'
 
 import { client } from '~/lib/client'
 import { clsxm } from '~/lib/cn'
@@ -25,18 +22,9 @@ interface ReactionButtonProps {
 
 const reactionButton = tv({
   slots: {
-    base: 'relative [&_[data-radix-popper-content-wrapper]]:z-[2]',
-    mainButton: [
-      'relative z-[2] flex size-10 items-center justify-center rounded-full',
-      'dark:bg-black/70 dark:text-white/80 light:bg-white/85 light:text-red  backdrop-blur-[70px]',
-      'bg-gradient-to-br',
-      'transition-colors duration-300',
-      'active:scale-95',
-      'disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer',
-    ],
-    mainButtonIcon: ' ',
+    base: 'relative z-[2] ',
     reactionsContainer: [
-      'mb-4 flex relative items-center justify-center gap-2',
+      'flex items-center justify-center gap-2',
       'rounded-full dark:border-white/20 !dark:bg-black/70 light:border-black/20 !light:bg-white/70 p-2 shadow-2xl backdrop-blur-[70px]',
       'bg-gradient-to-br dark:from-white/20 dark:to-white/0 light:from-black/20 light:to-black/0',
       'select-none',
@@ -48,21 +36,6 @@ const reactionButton = tv({
   },
 })
 
-const emojiContainerVariants = {
-  open: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: Spring.presets.snappy,
-  },
-  closed: {
-    opacity: 0,
-    scale: 0.2,
-    y: 50,
-    transition: Spring.presets.snappy,
-  },
-}
-
 const emojiVariants = {
   open: {
     opacity: 1,
@@ -70,25 +43,13 @@ const emojiVariants = {
     scale: 1,
     transition: Spring.presets.snappy,
   },
-  closed: {
-    opacity: 0,
-    y: 10,
-    scale: 0.8,
-    transition: Spring.presets.snappy,
-  },
 }
 
-const iconVariants = {
-  open: { rotate: 180 },
-  closed: { rotate: 0 },
-}
 export const ReactionButton = ({
   className,
   disabled = false,
   photoId,
 }: ReactionButtonProps) => {
-  const [panelElement, setPanelElement] = useState<HTMLDivElement | null>(null)
-  const [isOpen, setIsOpen] = useState(true)
   const styles = reactionButton()
   const { t } = useTranslation()
   const handleReaction = useCallback(
@@ -113,14 +74,9 @@ export const ReactionButton = ({
           })
         })
       })
-      // setIsOpen(false)
     },
     [handleReaction, mutate],
   )
-
-  useOnClickOutside({ current: panelElement } as RefObject<HTMLElement>, () => {
-    setIsOpen(false)
-  })
 
   const [currentAnimatingEmoji, setCurrentAnimatingEmoji] = useState<
     (typeof reactions)[number] | null
@@ -130,28 +86,30 @@ export const ReactionButton = ({
 
   return (
     <div className={clsxm(styles.base(), className)}>
-      <DropdownMenu.Root open={isOpen}>
-        <DropdownMenu.Trigger asChild>
+      <m.div
+        variants={emojiVariants}
+        initial="open"
+        animate="open"
+        className={styles.reactionsContainer()}
+      >
+        {reactions.map((reaction, index) => (
           <m.button
-            className={styles.mainButton()}
-            disabled={disabled}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            aria-expanded={isOpen}
-            aria-label="React to photo"
-            initial="closed"
+            key={index}
+            className={styles.reactionItem()}
+            variants={emojiVariants}
             onClick={() => {
-              setIsOpen((prev) => !prev)
+              if (animationTimeoutRef.current) {
+                clearTimeout(animationTimeoutRef.current)
+              }
+              setCurrentAnimatingEmoji(reaction)
+              handleReactionClick(reaction)
             }}
-            exit={{
-              opacity: 0,
-              scale: 0,
-              transition: { duration: 0.2 },
-            }}
-            animate={isOpen ? 'open' : 'closed'}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            disabled={disabled}
           >
             <AnimatePresence>
-              {currentAnimatingEmoji ? (
+              {currentAnimatingEmoji === reaction ? (
                 <m.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -168,78 +126,28 @@ export const ReactionButton = ({
                 >
                   <FluentEmoji
                     cdn="aliyun"
-                    emoji={getEmoji(currentAnimatingEmoji)!}
+                    emoji={getEmoji(reaction)!}
                     size={24}
                     type="anim"
                   />
                 </m.span>
               ) : (
-                <m.div variants={iconVariants}>
-                  <AnimatePresence mode="popLayout">
-                    <m.i
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0 } }}
-                      transition={Spring.presets.smooth}
-                      key={isOpen ? 'close' : 'emoji'}
-                      className={
-                        isOpen
-                          ? 'i-mingcute-close-fill'
-                          : 'i-mingcute-love-fill'
-                      }
-                    />
-                  </AnimatePresence>
-                </m.div>
+                <FluentEmoji
+                  cdn="aliyun"
+                  emoji={getEmoji(reaction)!}
+                  size={24}
+                  type="anim"
+                />
               )}
             </AnimatePresence>
-          </m.button>
-        </DropdownMenu.Trigger>
-
-        <DropdownMenu.Content side="top" align="center" forceMount asChild>
-          <AnimatePresence>
-            {isOpen && (
-              <m.div
-                ref={setPanelElement}
-                variants={emojiContainerVariants}
-                initial="closed"
-                animate="open"
-                exit="closed"
-                className={styles.reactionsContainer()}
-              >
-                {reactions.map((reaction, index) => (
-                  <DropdownMenu.Item key={index} asChild>
-                    <m.button
-                      className={styles.reactionItem()}
-                      variants={emojiVariants}
-                      onClick={() => {
-                        if (animationTimeoutRef.current) {
-                          clearTimeout(animationTimeoutRef.current)
-                        }
-                        setCurrentAnimatingEmoji(reaction)
-                        handleReactionClick(reaction)
-                      }}
-                      whileHover={{ scale: 1.2 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <FluentEmoji
-                        cdn="aliyun"
-                        emoji={getEmoji(reaction)!}
-                        size={24}
-                        type="anim"
-                      />
-                      {!!data?.data.reactions[reaction] && (
-                        <span className="bg-red/50 absolute top-0 right-0 rounded-full px-1.5 py-0.5 text-[8px] text-white tabular-nums backdrop-blur-2xl">
-                          {data.data.reactions[reaction]}
-                        </span>
-                      )}
-                    </m.button>
-                  </DropdownMenu.Item>
-                ))}
-              </m.div>
+            {!!data?.data.reactions[reaction] && (
+              <span className="bg-red/50 absolute top-0 right-0 rounded-full px-1.5 py-0.5 text-[8px] text-white tabular-nums backdrop-blur-2xl">
+                {data.data.reactions[reaction]}
+              </span>
             )}
-          </AnimatePresence>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
+          </m.button>
+        ))}
+      </m.div>
     </div>
   )
 }

@@ -385,7 +385,7 @@ export const ActionGroup = () => {
         title={t('action.columns.setting')}
         badge={
           // gallerySetting.columns !== 'auto' ? gallerySetting.columns : undefined
-          gallerySetting.columns !== 6 && gallerySetting.columns !== 'auto'
+          gallerySetting.columns !== 5 && gallerySetting.columns !== 'auto'
             ? gallerySetting.columns
             : undefined
         }
