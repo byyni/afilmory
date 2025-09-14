@@ -182,7 +182,6 @@ export const MasonryRoot = () => {
           )}
           onRender={handleRender}
           columnWidth={columnWidth}
-          // 改变该值会导致列数显示异常
           columnGutter={4}
           rowGutter={4}
           itemHeightEstimate={400}

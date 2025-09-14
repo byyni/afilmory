@@ -1,143 +1,230 @@
-- [中文说明](CLAUDE.md) | [English Docs](CLAUDE_en.md)
-
 # CLAUDE.md
 
-本文档为 Claude Code (claude.ai/code) 在处理此仓库代码时提供指导。
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 命令
+## Commands
 
-### 开发命令
+### Development Commands
+
 ```bash
-# 启动开发服务器（同时运行 web 和 SSR）
+# Start development server (runs both web and SSR)
 pnpm dev
 
-# 仅启动 web 开发服务器
+# Start only web development server
 pnpm --filter web dev
 
-# 仅启动 SSR 开发服务器
+# Start only SSR development server
 pnpm --filter @afilmory/ssr dev
 
-# 构建生产版本
+# Build production version
 pnpm build
 
-# 从存储构建清单（生成照片元数据）
+# Build manifest from storage (generates photo metadata)
 pnpm run build:manifest
 
-# 强制重新构建所有照片和元数据
+# Force rebuild all photos and metadata
 pnpm run build:manifest -- --force
 
-# 仅强制重新生成缩略图
+# Force regenerate thumbnails only
 pnpm run build:manifest -- --force-thumbnails
 
-# 仅强制重新生成清单
+# Force regenerate manifest only
 pnpm run build:manifest -- --force-manifest
 ```
 
-### 数据库命令（SSR 应用）
+### Database Commands (SSR app)
+
 ```bash
-# 生成数据库迁移
+# Generate database migrations
 pnpm --filter @afilmory/ssr db:generate
 
-# 运行数据库迁移
+# Run database migrations
 pnpm --filter @afilmory/ssr db:migrate
 ```
 
-### 代码质量命令
+### Code Quality Commands
+
 ```bash
-# 代码检查并修复
+# Lint and fix code
 pnpm lint
 
-# 格式化代码
+# Format code
 pnpm format
 
-# 类型检查（web 应用）
+# Type check (web app)
 pnpm --filter web type-check
 ```
 
-## 架构
+## Architecture
 
-### 单体仓库结构
-这是一个使用 pnpm 工作区的项目，包含多个应用和包：
+### Design Patterns & Application Structure
 
-- `apps/web/` - 主前端 React 应用（Vite + React 19）
-- `apps/ssr/` - Next.js SSR 应用，用于服务端渲染和 API
-- `packages/` - 共享包和工具
-- `packages/builder/` - 照片处理和清单生成工具
-- `packages/webgl-viewer/` - 基于 WebGL 的照片查看器组件
+**Hybrid SPA + SSR Architecture**: The application uses a unique architecture where Next.js serves as both a hosting platform for the Vite-built SPA and a dynamic SEO/OG meta generator:
 
-### 关键技术
-- **前端**：React 19、TypeScript、Vite、Tailwind CSS、Jotai（状态管理）、TanStack Query
-- **后端**：Next.js 15、Drizzle ORM、PostgreSQL
-- **图像处理**：Sharp、EXIF 提取、WebGL 渲染
-- **存储**：S3 兼容存储、GitHub 存储支持
-- **构建工具**：pnpm 工作区、ESLint、Prettier
+- **Production**: Next.js serves the pre-built SPA static assets and provides dynamic routes for SEO
+- **Development**: Both servers run concurrently with the SSR app proxying to the SPA for seamless development
 
-### 配置文件
-- `builder.config.json` - 照片处理和存储配置
-- `config.json` - 站点配置（名称、描述、作者等）
-- `site.config.ts` - 带默认值的 TypeScript 站点配置
-- `env.ts` - 环境变量验证和类型定义
+**Key Design Patterns**:
 
-### 照片处理流程
-1. **存储同步**：从配置的存储（S3/GitHub）获取照片
-2. **格式转换**：将 HEIC、TIFF 转换为网络兼容格式
-3. **缩略图生成**：创建多种尺寸以提高性能
-4. **EXIF 提取**：提取相机设置和 GPS 数据
-5. **清单生成**：创建包含元数据的 `photos-manifest.json`
+- **Adapter Pattern**: Builder system uses adapters for different storage providers (S3, GitHub)
+- **Factory Pattern**: Photo processing pipeline with configurable workers and storage adapters
+- **Observer Pattern**: Manifest changes trigger SSR meta tag updates for social sharing
+- **Singleton Pattern**: PhotoLoader class provides global access to manifest data
 
-### 开发工作流程
-- Web 应用在开发服务器上运行，支持热重载
-- SSR 应用提供 API 和服务端渲染
-- Builder 工具处理照片并生成元数据
-- 数据库迁移处理架构变更
+### Monorepo Structure
 
-### 代码质量规则
-1. 避免代码重复 - 提取通用类型和组件
-2. 保持组件专注 - 使用钩子和组件组合
-3. 遵循 React 最佳实践 - 正确使用 Context、状态管理
-4. 严格使用 TypeScript - 在整个项目中利用类型安全
+This is a pnpm workspace with multiple applications and packages:
 
-### 国际化指南
-- 使用点分隔的扁平键（如 `exif.camera.model`）
-- 使用 `_one` 和 `_other` 后缀支持复数形式
-- 先修改英文，再修改其他语言（ESLint 自动移除未使用的键）
-- 避免扁平结构中的嵌套键冲突
+- `apps/web/` - Main frontend React application (Vite + React 19 SPA)
+- `apps/ssr/` - Next.js 15 application serving as SPA host + dynamic SEO/OG generator
+- `packages/builder/` - Photo processing and manifest generation tool with adapter pattern
+- `packages/webgl-viewer/` - High-performance WebGL-based photo viewer component
+- `packages/data/` - Shared data access layer and PhotoLoader singleton
+- `packages/components/` - Reusable UI components across apps
 
-- **关键：避免扁平结构中的嵌套键冲突**
-  - ❌ 错误：`"action.tag.mode.and": "AND"` + `"action.tag.mode.and.tooltip": "..."`
-  - ✅ 正确：`"action.tag.mode.and": "AND"` + `"action.tag.tooltip.and": "..."`
-  - 规则：一个键不能同时是字符串值和父对象
-  - 扁平结构中的每个键必须完全独立
+### Next.js as SPA Host & SEO Provider
 
-### 测试策略
-- 查看 README.md 和 package.json 脚本获取测试命令
-- 使用 `pnpm build` 验证构建是否正常工作
-- 使用 `pnpm run build:manifest` 测试照片处理
-- 使用 `pnpm --filter web type-check` 验证类型
+**Dual Server Architecture**:
 
-## Cursor 规则集成
+- **Development Mode**: `apps/ssr/src/app/[...all]/route.ts` catches all SPA routes and serves index.html with injected manifest data
+- **Production Mode**: Next.js serves pre-built Vite SPA assets while providing dynamic OG image generation
 
-### 代码质量标准
-- 避免代码重复 - 当多次使用时，提取通用类型和组件
-- 保持组件专注 - 对大型逻辑块使用钩子和组件拆分
-- 掌握 React 理念 - 正确使用 Context、组件组合、状态管理以防止不必要的重渲染
+**Dynamic SEO Implementation**:
 
-### UI/UX 指南
-- 通过 tailwind-uikit-colors 包使用 Apple UIKit 色彩系统
-- 优先使用语义化颜色名称：`text-primary`、`fill-secondary`、`material-thin` 等
-- 遵循系统颜色：`red`、`blue`、`green`、`mint`、`teal`、`cyan`、`indigo`、`purple`、`pink`、`brown`、`gray`
-- 使用基于不透明度的填充和适当对比度的材料设计原则
+- `apps/ssr/src/index.html.ts` - Pre-compiled HTML template with manifest data injected as `window.__MANIFEST__`
+- Dynamic OG images generated per photo via Next.js API routes (`/og/[photoId]/route.ts`)
+- HTML meta tags dynamically replaced for social media sharing
 
-### 国际化开发规则
-- 使用点表示法的扁平键：`exif.camera.model`
-- 支持复数形式：`_one` 和 `_other` 后缀
-- 始终先修改英语（`en.json`），然后再修改其他语言
-- 避免扁平结构中的键冲突（例如 `exif.custom.rendered` 与 `exif.custom.rendered.custom`）
-- ESLint 自动从非英语文件中删除未使用的键
+### Configuration Architecture
 
-## 重要说明
-- 这是一个照片画廊应用，用于处理和显示来自云存储的照片
-- Builder 工具处理复杂的图像处理工作流
-- WebGL 查看器提供高性能的照片查看体验
-- 地图集成显示来自 GPS EXIF 数据的照片位置
-- 支持 iOS/Apple 设备视频的 Live Photo 功能
+**Two-Layer Configuration System**:
+
+1. **Builder Config** (`builder.config.json`) - **Infrastructure/Processing Layer**:
+
+   ```json
+   {
+     "storage": { "provider": "s3", "bucket": "...", "region": "..." },
+     "performance": { "worker": { "workerCount": 8, "useClusterMode": true } },
+     "repo": { "enable": true, "url": "...", "token": "..." }
+   }
+   ```
+   - Controls photo processing, storage connections, and build performance
+   - Handles remote git repository sync for manifest/thumbnails
+   - Configures multi-process/cluster processing for large photo sets
+
+2. **Site Config** (`site.config.ts` + `config.json`) - **Presentation/Content Layer**:
+   ```typescript
+   {
+     name: "Gallery Name",
+     description: "...",
+     author: { name: "...", url: "...", avatar: "..." },
+     social: { twitter: "...", github: "..." },
+     map: ["maplibre"] // Map provider configuration
+   }
+   ```
+   - Controls site branding, author info, social links
+   - Merged with user `config.json` using es-toolkit/compat
+   - Consumed by both SPA and SSR for consistent branding
+
+### Manifest Generation & Data Flow
+
+**Builder Pipeline** (`packages/builder/src/cli.ts`):
+
+1. **Storage Sync**: Downloads photos from S3/GitHub with incremental change detection
+2. **Format Processing**: HEIC→JPEG, TIFF→web formats, Live Photo detection
+3. **Multi-threaded Processing**: Configurable worker pools or cluster mode for performance
+4. **EXIF & Metadata Extraction**: Camera settings, GPS, Fujifilm recipes, tone analysis
+5. **Thumbnail Generation**: Multiple sizes with blurhash placeholders
+6. **Manifest Serialization**: Generates `photos-manifest.json` with full metadata
+7. **Remote Sync**: Pushes updates to git repository if configured
+
+**SPA Data Consumption** (`packages/data/src/index.ts`):
+
+```typescript
+class PhotoLoader {
+  constructor() {
+    this.photos = __MANIFEST__.data // Injected via window global
+    this.cameras = __MANIFEST__.cameras
+    this.lenses = __MANIFEST__.lenses
+    // Creates lookup maps and provides data access layer
+  }
+}
+```
+
+**Data Flow**:
+
+1. Builder generates manifest → `photos-manifest.json`
+2. SSR injects manifest into HTML → `window.__MANIFEST__`
+3. SPA PhotoLoader singleton consumes global data
+4. React components access photos via `photoLoader.getPhotos()`
+
+### Key Technologies
+
+- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS, Jotai (state), TanStack Query
+- **Backend**: Next.js 15 (SPA host + SEO), Drizzle ORM, PostgreSQL
+- **Image Processing**: Sharp, exiftool-vendored, HEIC conversion, blurhash generation
+- **Storage**: S3-compatible (AWS/MinIO), GitHub repository storage
+- **Build System**: pnpm workspaces, concurrent dev servers, cluster-based processing
+
+### Development Workflow
+
+- **Concurrent Development**: `pnpm dev` runs both SPA (Vite) and SSR (Next.js) servers
+- **Hot Reloading**: SPA changes reflect immediately, SSR provides SEO preview
+- **Manifest Building**: `pnpm run build:manifest` processes photos and updates data
+- **Type Safety**: Shared types between builder, SPA, and SSR ensure consistency
+
+### Code Quality Rules
+
+1. Avoid code duplication - extract common types and components
+2. Keep components focused - use hooks and component composition
+3. Follow React best practices - proper Context usage, state management
+4. Use TypeScript strictly - leverage type safety throughout
+
+### i18n Guidelines
+
+- Use flat keys with `.` separation (e.g., `exif.camera.model`)
+- Support pluralization with `_one` and `_other` suffixes
+- Modify English first, then other languages (ESLint auto-removes unused keys)
+- **CRITICAL: Avoid nested key conflicts in flat structure**
+  - ❌ WRONG: `"action.tag.mode.and": "AND"` + `"action.tag.mode.and.tooltip": "..."`
+  - ✅ CORRECT: `"action.tag.mode.and": "AND"` + `"action.tag.tooltip.and": "..."`
+  - Rule: A key cannot be both a string value AND a parent object
+  - Each key must be completely independent in the flat structure
+
+### Testing Strategy
+
+- Check README.md and package.json scripts for test commands
+- Verify builds work with `pnpm build`
+- Test photo processing with `pnpm run build:manifest`
+- Validate types with `pnpm --filter web type-check`
+
+## Cursor Rules Integration
+
+### Code Quality Standards
+
+- Avoid code duplication - extract common types and components when used multiple times
+- Keep components focused - use hooks and component splitting for large logic blocks
+- Master React philosophy - proper Context usage, component composition, state management to prevent re-renders
+
+### UI/UX Guidelines
+
+- Use Apple UIKit color system via tailwind-uikit-colors package
+- Prefer semantic color names: `text-primary`, `fill-secondary`, `material-thin`, etc.
+- Follow system colors: `red`, `blue`, `green`, `mint`, `teal`, `cyan`, `indigo`, `purple`, `pink`, `brown`, `gray`
+- Use material design principles with opacity-based fills and proper contrast
+
+### i18n Development Rules
+
+- Use flat keys with dot notation: `exif.camera.model`
+- Support pluralization: `_one` and `_other` suffixes
+- Always modify English (`en.json`) first, then other languages
+- Avoid key conflicts in flat structure (e.g., `exif.custom.rendered` vs `exif.custom.rendered.custom`)
+- ESLint automatically removes unused keys from non-English files
+
+## Important Notes
+
+- This is a photo gallery application that processes and displays photos from cloud storage
+- The builder tool handles complex image processing workflows
+- WebGL viewer provides high-performance photo viewing experience
+- Map integration shows photo locations from GPS EXIF data
+- Live Photo support for iOS/Apple device videos

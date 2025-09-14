@@ -39,12 +39,12 @@ async function addRoundedCorners(
 
 // 生成不同尺寸的 favicon
 export async function generateFavicons() {
-  const logoPath = join(__dirname, '../logo.jpg')
+  const logoPath = join(__dirname, '../logo.png')
   const outputDir = join(process.cwd(), 'public')
 
   // 检查 logo 文件是否存在
   if (!existsSync(logoPath)) {
-    throw new Error(`Logo file not found: ${logoPath}`)
+    throw new Error(`Logo文件不存在: ${logoPath}`)
   }
 
   if (!existsSync(outputDir)) {
@@ -82,7 +82,7 @@ export async function generateFavicons() {
 
       const outputPath = join(outputDir, name)
       writeFileSync(outputPath, roundedBuffer)
-      console.info(`✅ Generated favicon: ${name} (${size}x${size})`)
+      console.info(`✅ 生成favicon图标: ${name} (${size}x${size})`)
     }
 
     // 生成主 favicon.ico（使用 32x32）
@@ -102,15 +102,13 @@ export async function generateFavicons() {
 
     const faviconPath = join(outputDir, 'favicon.ico')
     writeFileSync(faviconPath, faviconBuffer)
-    console.info(`✅ Generated main favicon: favicon.ico`)
+    console.info(`✅ 生成主favicon图标: favicon.ico`)
 
     // PWA manifest 由 vite-plugin-pwa 生成，这里不再生成重复的文件
 
-    console.info(
-      `🎨 All favicons generated successfully from logo with rounded corners!`,
-    )
+    console.info(`🎨 所有favicons从圆角logo文件生成成功！`)
   } catch (error) {
-    console.error('❌ Error generating favicons:', error)
+    console.error('❌ 生成favicons失败:', error)
     throw error
   }
 }
