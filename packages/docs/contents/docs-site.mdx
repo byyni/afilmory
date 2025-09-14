@@ -1,133 +1,133 @@
 ---
-title: Docs site
-description: Docs site introduction and contribution guide
+title: 文档站点
+description: 文档站点介绍和贡献指南
 createdAt: 2025-09-11T17:05:55+08:00
-lastModified: 2025-09-14T16:42:32+08:00
+lastModified: 2025-09-14T19:54:27+08:00
 ---
 
-# Afilmory Docs Site
+# Afilmory 文档站点
 
-A modern documentation site generator built with Vite, React, and MDX. This package provides a file-system based routing documentation site with automatic route generation, syntax highlighting, and responsive design.
+一个使用 Vite、React 和 MDX 构建的现代化文档站点生成器。此包提供了基于文件系统路由的文档站点，具有自动路由生成、语法高亮和响应式设计。
 
-## Features
+## 功能特性
 
-- **File-system based routing** - Automatic route generation from markdown files
-- **MDX support** - Write JSX components directly in markdown
-- **Syntax highlighting** - Code blocks with Shiki highlighting (light/dark themes)
-- **Static site generation** - Build static HTML files for deployment
-- **Hot reload** - Real-time updates during development
-- **Responsive design** - Built with Tailwind CSS and Apple UIKit colors
-- **TypeScript support** - Full type safety throughout the codebase
+- **基于文件系统的路由** - 自动从 Markdown 文件生成路由
+- **MDX 支持** - 直接在 Markdown 中编写 JSX 组件
+- **语法高亮** - 使用 Shiki 高亮显示代码块（支持亮色/暗色主题）
+- **静态站点生成** - 构建用于部署的静态 HTML 文件
+- **热重载** - 开发期间实时更新
+- **响应式设计** - 使用 Tailwind CSS 和 Apple UIKit 颜色构建
+- **TypeScript 支持** - 整个代码库的完整类型安全
 
-## Quick Start
+## 快速开始
 
-### Development
+### 开发
 
-Start the development server:
+启动开发服务器：
 
 ```bash
 pnpm dev
 ```
 
-This will start the Vite development server and watch for changes in the `contents/` directory.
+这将启动 Vite 开发服务器并监视 `contents/` 目录中的更改。
 
-### Building
+### 构建
 
-Build the documentation site for production:
+构建生产环境的文档站点：
 
 ```bash
 pnpm build
 ```
 
-This runs three steps:
-1. `build:client` - Builds the client-side React application
-2. `build:static` - Generates static HTML files via SSR
-3. `output` - Processes and finalizes the build output
+这将运行三个步骤：
+1. `build:client` - 构建客户端 React 应用程序
+2. `build:static` - 通过 SSR 生成静态 HTML 文件
+3. `output` - 处理并最终确定构建输出
 
-### Preview
+### 预览
 
-Preview the built site locally:
+在本地预览构建后的站点：
 
 ```bash
 pnpm preview
 ```
 
-## Project Structure
+## 项目结构
 
 ```plain
 packages/docs/
-├── contents/           # Documentation content (MDX/Markdown files)
-│   ├── index.mdx      # Homepage content
+├── contents/           # 文档内容（MDX/Markdown 文件）
+│   ├── index.mdx      # 主页内容
 │   ├── getting-started.md
-│   └── apps/          # Nested documentation sections
+│   └── apps/          # 嵌套文档部分
 ├── src/
-│   ├── components/    # React components
-│   ├── styles/        # CSS and styling
-│   ├── routes.ts      # Auto-generated routes (do not edit)
-│   └── App.tsx        # Main application component
+│   ├── components/    # React 组件
+│   ├── styles/        # CSS 和样式
+│   ├── routes.ts      # 自动生成的路由（请勿编辑）
+│   └── App.tsx        # 主应用程序组件
 ├── plugins/
-│   └── route-generater.ts  # Custom Vite plugin for route generation
-├── public/            # Static assets
-└── scripts/           # Build scripts
+│   └── route-generater.ts  # 用于路由生成的自定义 Vite 插件
+├── public/            # 静态资源
+└── scripts/           # 构建脚本
 ```
 
-## Writing Documentation
+## 编写文档
 
-### File-based Routing
+### 基于文件的路由
 
-The documentation follows a file-system based routing convention:
+文档遵循基于文件系统的路由约定：
 
-- `contents/index.mdx` → `/` (homepage)
+- `contents/index.mdx` → `/`（主页）
 - `contents/getting-started.md` → `/getting-started`
-- `contents/apps/index.md` → `/apps` (section index)
+- `contents/apps/index.md` → `/apps`（章节索引）
 - `contents/apps/web.md` → `/apps/web`
 
-### MDX Format
+### MDX 格式
 
-You can use standard Markdown with JSX components:
+您可以使用带有 JSX 组件的标准 Markdown：
 
 ```mdx
 ---
-title: Page Title
+title: 页面标题
 createdAt: 2025-01-20T10:00:00Z
 lastModified: 2025-01-20T10:00:00Z
 ---
 
-# Page Title
+# 页面标题
 
-Regular markdown content here.
+这里是常规的 Markdown 内容。
 
 <div className="bg-blue-100 p-4 rounded">
-  Custom JSX component
+  自定义 JSX 组件
 </div>
 
 ```
 
-### Frontmatter
+### 前置元数据
 
-Each documentation file can include frontmatter metadata:
+每个文档文件都可以包含前置元数据：
 
 ```yaml
 ---
-title: Page Title          # Used for navigation and SEO
-createdAt: 2025-01-20     # Creation date
-lastModified: 2025-01-20  # Last modification date
-description: Page description  # Optional page description
+title: 页面标题          # 用于导航和 SEO
+createdAt: 2025-01-20     # 创建日期
+lastModified: 2025-01-20  # 最后修改日期
+description: 页面描述  # 可选的页面描述
 ---
 ```
 
-## Development Guide
+## 开发指南
 
-### Adding New Content
+### 添加新内容
 
-1. Create a new `.md` or `.mdx` file in the `contents/` directory
-2. Add appropriate frontmatter metadata
-3. The route will be automatically generated on save
-4. The development server will hot-reload with your changes
+1. 在 `contents/` 目录中创建新的 `.md` 或 `.mdx` 文件
+2. 添加适当的前置元数据
+3. 保存后将自动生成路由
+4. 开发服务器将热重载您的更改
 
-### Custom Components
+### 自定义组件
 
-Create reusable components in `src/components/` and use them in MDX files:
+在 `src/components/` 中创建可重用组件，并在 MDX 文件中使用它们：
 
 ```typescript
 // src/components/InfoBox.tsx
@@ -141,86 +141,86 @@ export function InfoBox({ children }: { children: React.ReactNode }) {
 ```
 
 ```mdx
-<!-- In your MDX file -->
+<!-- 在您的 MDX 文件中 -->
 import { InfoBox } from '../src/components/InfoBox';
 
 <InfoBox>
-  This is a custom info box component.
+  这是一个自定义信息框组件。
 </InfoBox>
 ```
 
-### Styling
+### 样式
 
-The project uses:
-- **Tailwind CSS** for utility-first styling
-- **Apple UIKit colors** via `tailwindcss-uikit-colors`
-- **Typography plugin** for prose styling
-- **Custom scrollbar** styling
+该项目使用：
+- **Tailwind CSS** 用于工具优先的样式设计
+- 通过 `tailwindcss-uikit-colors` 提供的 **Apple UIKit 颜色**
+- 用于散文样式的 **排版插件**
+- **自定义滚动条** 样式
 
-Use semantic color classes:
+使用语义化颜色类：
 ```css
-/* Preferred */
+/* 推荐 */
 .text-text-primary .bg-fill-secondary
 
-/* Avoid */
+/* 避免 */
 .text-blue-500 .bg-gray-100
 ```
 
-### Route Generation Plugin
+### 路由生成插件
 
-The custom Vite plugin automatically generates routes from the file system:
+自定义 Vite 插件自动从文件系统生成路由：
 
-- Watches the `contents/` directory for changes
-- Generates `src/routes.ts` with route definitions
-- Creates `src/routes.json` for metadata
-- Handles index files and nested directories
+- 监视 `contents/` 目录的更改
+- 生成带有路由定义的 `src/routes.ts`
+- 创建用于元数据的 `src/routes.json`
+- 处理索引文件和嵌套目录
 
-## Configuration
+## 配置
 
-### Vite Configuration
+### Vite 配置
 
-Key configuration in `vite.config.ts`:
+`vite.config.ts` 中的关键配置：
 
-- **MDX processing** with frontmatter support
-- **Syntax highlighting** with Shiki
-- **Route generation** plugin
-- **Tailwind CSS** integration
-- **Code inspector** for development
+- 支持前置元数据的 **MDX 处理**
+- 使用 Shiki 的 **语法高亮**
+- **路由生成** 插件
+- **Tailwind CSS** 集成
+- 用于开发的 **代码检查器**
 
-### Supported Languages
+### 支持的语言
 
-Code highlighting supports:
+代码高亮支持：
 - JavaScript/TypeScript
 - JSX/TSX
 - MDX
 - JSON
 - Shell/Bash
 
-## Deployment
+## 部署
 
-The built site in `dist/` can be deployed to any static hosting service:
+`dist/` 中的构建站点可以部署到任何静态托管服务：
 
-- **Vercel** - Zero config deployment
-- **Netlify** - Drag and drop the `dist` folder
-- **GitHub Pages** - Upload build artifacts
-- **Cloudflare Pages** - Connect your repository
+- **Vercel** - 零配置部署
+- **Netlify** - 拖放 `dist` 文件夹
+- **GitHub Pages** - 上传构建产物
+- **Cloudflare Pages** - 连接您的仓库
 
-## Scripts Reference
+## 脚本参考
 
-- `pnpm dev` - Start development server
-- `pnpm build` - Full production build
-- `pnpm build:client` - Build client-side app only
-- `pnpm build:static` - Generate static HTML via SSR
-- `pnpm output` - Process build output
-- `pnpm lint` - Run ESLint
-- `pnpm preview` - Preview built site locally
+- `pnpm dev` - 启动开发服务器
+- `pnpm build` - 完整的生产构建
+- `pnpm build:client` - 仅构建客户端应用
+- `pnpm build:static` - 通过 SSR 生成静态 HTML
+- `pnpm output` - 处理构建输出
+- `pnpm lint` - 运行 ESLint
+- `pnpm preview` - 在本地预览构建的站点
 
-## Contributing
+## 贡献指南
 
-When contributing to the documentation:
+为文档做贡献时：
 
-1. Use `pnpm create:doc` and follow instructions to create a new document.
-2. Write your docs.
-3. Test your changes locally with `pnpm dev`
-4. Ensure the build passes with `pnpm build`
-5. Use semantic commit messages
+1. 使用 `pnpm create:doc` 并按照说明创建新文档。
+2. 编写您的文档。
+3. 使用 `pnpm dev` 在本地测试您的更改
+4. 确保构建通过 `pnpm build`
+5. 使用语义化提交消息

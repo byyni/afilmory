@@ -1,21 +1,21 @@
 ---
-title: Storage providers
-description: Afilmory can work with multiple storage providers, including S3, Git and local file system
+title: 存储提供商
+description: Afilmory 可以与多种存储提供商配合使用，包括 S3、Git 和本地文件系统
 createdAt: 2025-08-12T15:09:08+08:00
-lastModified: 2025-09-14T16:42:32+08:00
+lastModified: 2025-09-14T19:54:27+08:00
 ---
 
-# Storage Providers
+# 存储提供商
 
-Afilmory's flexible storage architecture allows you to store your photos across different platforms. The photo processing engine (`@afilmory/builder`) abstracts storage operations through a unified interface, making it easy to switch between providers.
+Afilmory 的灵活存储架构允许您跨不同平台存储照片。照片处理引擎 (`@afilmory/builder`) 通过统一接口抽象存储操作，使切换提供商变得简单。
 
-## Supported Providers
+## 支持的提供商
 
-### S3-Compatible Storage
+### S3 兼容存储
 
-S3-compatible storage is the recommended option for production deployments, offering scalability, CDN integration, and reliable performance.
+S3 兼容存储是生产部署的推荐选项，提供可扩展性、CDN 集成和可靠性能。
 
-**Configuration in `builder.config.json`:**
+**在 `builder.config.json` 中的配置：**
 
 ```json
 {
@@ -29,26 +29,26 @@ S3-compatible storage is the recommended option for production deployments, offe
 }
 ```
 
-**Environment Variables (`.env`):**
+**环境变量 (`.env`)：**
 
 ```bash
 S3_ACCESS_KEY_ID=your_access_key_id
 S3_SECRET_ACCESS_KEY=your_secret_access_key
 ```
 
-### GitHub Storage
+### GitHub 存储
 
-GitHub storage leverages Git repositories for photo storage, ideal for static sites, small galleries, or when you want version control for your photos.
+GitHub 存储利用 Git 仓库存储照片，非常适合静态站点、小型图库或需要照片版本控制的场景。
 
-**Features:**
-- ✅ Free storage space (GitHub repository limit 1GB)
-- ✅ Global CDN support via raw.githubusercontent.com
-- ✅ Version control for your photos
-- ✅ Public access without authentication
-- ⚠️ GitHub API rate limits apply
-- ⚠️ Not suitable for large files or frequent updates
+**特点：**
+- ✅ 免费存储空间（GitHub 仓库限制 1GB）
+- ✅ 通过 raw.githubusercontent.com 提供全球 CDN 支持
+- ✅ 照片版本控制
+- ✅ 无需身份验证的公共访问
+- ⚠️ 受 GitHub API 速率限制
+- ⚠️ 不适合大文件或频繁更新
 
-**Configuration in `builder.config.json`:**
+**在 `builder.config.json` 中的配置：**
 
 ```json
 {
@@ -65,44 +65,44 @@ GitHub storage leverages Git repositories for photo storage, ideal for static si
 }
 ```
 
-**Environment Variables:**
+**环境变量：**
 
 ```bash
 GIT_TOKEN=ghp_your_github_personal_access_token
 ```
 
-**Setup Steps:**
+**设置步骤：**
 
-1. **Create GitHub Repository**
+1. **创建 GitHub 仓库**
    ```bash
    git clone https://github.com/your-username/photo-gallery.git
    cd photo-gallery
    mkdir photos
    ```
 
-2. **Get GitHub Access Token** (optional but recommended)
-   - Visit GitHub Settings > Developer settings > Personal access tokens
-   - Create new Fine-grained personal access token
-   - Grant "Contents" permission (read/write) to your repository
+2. **获取 GitHub 访问令牌**（可选但推荐）
+   - 访问 GitHub 设置 > 开发者设置 > 个人访问令牌
+   - 创建新的细粒度个人访问令牌
+   - 授予仓库的 "Contents" 权限（读写）
 
-3. **Required Permissions:**
-   - `Contents: Read and write` - for uploading processed photos
-   - `Metadata: Read` - for repository access
+3. **所需权限：**
+   - `Contents: Read and write` - 用于上传处理后的照片
+   - `Metadata: Read` - 用于仓库访问
 
-### Local File System
+### 本地文件系统
 
-Local storage is suitable for development, testing, or self-hosted deployments where photos are stored on the same server.
+本地存储适用于开发、测试或自托管部署，其中照片存储在同一服务器上。
 
-**Features:**
-- ✅ No external dependencies
-- ✅ Fast access speeds
-- ✅ Complete private control
-- ✅ Recursive directory scanning
-- ✅ Live Photos detection support
-- ⚠️ Requires proper file system permissions
-- ⚠️ Not suitable for distributed deployments
+**特点：**
+- ✅ 无外部依赖
+- ✅ 访问速度快
+- ✅ 完全私有控制
+- ✅ 递归目录扫描
+- ✅ Live Photos 检测支持
+- ⚠️ 需要适当的文件系统权限
+- ⚠️ 不适合分布式部署
 
-**Configuration in `builder.config.json`:**
+**在 `builder.config.json` 中的配置：**
 
 ```json
 {
@@ -114,29 +114,29 @@ Local storage is suitable for development, testing, or self-hosted deployments w
 }
 ```
 
-## Photo Processing Workflow
+## 照片处理工作流
 
-### Image Processing Pipeline
+### 图像处理流水线
 
-When photos are processed, Afilmory performs these operations:
+处理照片时，Afilmory 执行以下操作：
 
-1. **Format Detection** - Identifies HEIC, TIFF, RAW, and standard formats
-2. **EXIF Extraction** - Extracts camera metadata, GPS data, and Fujifilm film recipes
-3. **Format Conversion** - Converts HEIC/TIFF to web-compatible formats (WebP, JPEG)
-4. **Thumbnail Generation** - Creates multiple thumbnail sizes
-5. **Blurhash Generation** - Creates placeholder images for smooth loading
-6. **Manifest Creation** - Generates metadata JSON for the gallery
+1. **格式检测** - 识别 HEIC、TIFF、RAW 和标准格式
+2. **EXIF 提取** - 提取相机元数据、GPS 数据和富士胶片配方
+3. **格式转换** - 将 HEIC/TIFF 转换为网络兼容格式（WebP、JPEG）
+4. **缩略图生成** - 创建多种缩略图尺寸
+5. **Blurhash 生成** - 创建占位图像以实现平滑加载
+6. **清单创建** - 为图库生成元数据 JSON
 
-### Storage Organization
+### 存储组织
 
-Afilmory organizes files in your storage with this structure:
+Afilmory 按以下结构在存储中组织文件：
 
 ```
 photos/
 ├── 2024/
 │   ├── 01-january/
 │   │   ├── IMG_001.jpg
-│   │   ├── IMG_001.mov      # Live Photo video
+│   │   ├── IMG_001.mov      # Live Photo 视频
 │   │   └── IMG_002.heic
 │   └── 02-february/
 │       └── sunset.jpg
@@ -144,32 +144,32 @@ photos/
 │   └── vacation/
 │       ├── beach.jpg
 │       └── mountain.png
-└── manifest.json            # Photo metadata and index
+└── manifest.json            # 照片元数据和索引
 ```
 
-### Processing Commands
+### 处理命令
 
-Use these commands to manage your photo processing:
+使用这些命令管理照片处理：
 
 ```bash
-# Initial photo processing
+# 初始照片处理
 pnpm run build:manifest
 
-# Force rebuild all photos
+# 强制重建所有照片
 pnpm run build:manifest -- --force
 
-# Regenerate only thumbnails
+# 仅重新生成缩略图
 pnpm run build:manifest -- --force-thumbnails
 
-# Process specific directory
+# 处理特定目录
 pnpm run build:manifest -- --path "2024/vacation"
 ```
 
-## Environment-Specific Configurations
+## 环境特定配置
 
-### Development Setup
+### 开发设置
 
-For local development, use local storage:
+对于本地开发，使用本地存储：
 
 ```json
 {
@@ -181,9 +181,9 @@ For local development, use local storage:
 }
 ```
 
-### Production Setup
+### 生产设置
 
-For production, use S3-compatible storage with CDN:
+对于生产环境，使用带 CDN 的 S3 兼容存储：
 
 ```json
 {
@@ -203,28 +203,28 @@ For production, use S3-compatible storage with CDN:
 }
 ```
 
-## API Limitations
+## API 限制
 
-### GitHub Storage Limits
+### GitHub 存储限制
 
-- **Unauthenticated requests**: 60 requests/hour/IP
-- **Authenticated requests**: 5,000 requests/hour/token
-- **File size**: Maximum 100MB (via API)
-- **Repository size**: Recommended not to exceed 1GB
+- **未认证请求**：每小时/每 IP 60 个请求
+- **已认证请求**：每小时/每令牌 5,000 个请求
+- **文件大小**：最大 100MB（通过 API）
+- **仓库大小**：建议不超过 1GB
 
-### Storage Provider Comparison
+### 存储提供商比较
 
-| Feature | S3 | GitHub | Local |
-|---------|----|----|--------|
-| Storage Space | Pay-as-you-go | 1GB free | Depends on disk |
-| CDN | Additional cost | Free global CDN | Manual setup |
-| API Limits | Very high | Limited | None |
-| Use Case | Production | Small projects, demos | Development, self-hosted |
-| Setup Complexity | Medium | Simple | Minimal |
+| 功能 | S3 | GitHub | 本地 |
+|------|----|--------|------|
+| 存储空间 | 按需付费 | 免费 1GB | 取决于磁盘 |
+| CDN | 额外费用 | 免费全球 CDN | 手动设置 |
+| API 限制 | 非常高 | 有限 | 无 |
+| 使用场景 | 生产环境 | 小型项目、演示 | 开发、自托管 |
+| 设置复杂度 | 中等 | 简单 | 最小 |
 
-## Security Considerations
+## 安全考虑
 
-### S3 Bucket Policies
+### S3 存储桶策略
 
 ```json
 {
@@ -240,18 +240,18 @@ For production, use S3-compatible storage with CDN:
 }
 ```
 
-### GitHub Repository Settings
+### GitHub 仓库设置
 
-- Set repository to public for image access
-- Use fine-grained personal access tokens
-- Limit token permissions to specific repositories
+- 将仓库设置为公开以访问图像
+- 使用细粒度个人访问令牌
+- 将令牌权限限制到特定仓库
 
-### Environment Variables
+### 环境变量
 
-Store sensitive credentials securely:
+安全存储敏感凭证：
 
 ```bash
-# Use environment-specific .env files
+# 使用环境特定的 .env 文件
 # .env.production
 S3_ACCESS_KEY_ID=prod_access_key
 S3_SECRET_ACCESS_KEY=prod_secret_key
