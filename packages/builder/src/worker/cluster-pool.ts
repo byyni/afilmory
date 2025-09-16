@@ -152,8 +152,24 @@ export class ClusterPool<T> extends EventEmitter {
       `计算 worker 数量：总任务 ${this.totalTasks}，每个 worker 并发 ${this.workerConcurrency}，需要 ${requiredWorkers} 个，实际启动 ${workersToStart} 个`,
     )
 
+    // 创建 worker 启动任务数组，使用 Promise.allSettled 确保即使部分 worker 启动失败也能继续
+    const workerPromises: Promise<void>[] = [];
     for (let i = 1; i <= workersToStart; i++) {
-      await this.createWorker(i)
+      workerPromises.push(
+        this.createWorker(i)
+          .catch(error => {
+            this.logger.main.error(`Worker ${i} 启动失败:`, error);
+            // 记录错误但不抛出，允许其他 worker 继续启动
+          })
+      );
+    }
+
+    // 等待所有 worker 启动尝试完成
+    await Promise.allSettled(workerPromises);
+
+    // 检查是否有至少一个 worker 成功启动
+    if (this.workers.size === 0) {
+      throw new Error('所有 worker 都启动失败，无法继续处理任务');
     }
   }
 
@@ -177,69 +193,99 @@ export class ClusterPool<T> extends EventEmitter {
 
       const workerLogger = this.logger.worker(workerId)
 
-      worker.on('online', () => {
-        workerLogger.start(
-          `Worker ${workerId} 进程启动 (PID: ${worker.process?.pid})`,
-        )
-        resolve()
-      })
-
-      worker.on(
-        'message',
-        (
-          message:
-            | TaskResult
-            | BatchTaskResult
-            | WorkerReadyMessage
-            | { type: 'init-complete'; workerId: number },
-        ) => {
-          switch (message.type) {
-            case 'ready':
-            case 'pong': {
-              this.handleWorkerReady(workerId, message as WorkerReadyMessage)
-
-              break
-            }
-            case 'init-complete': {
-              this.handleWorkerInitComplete(workerId)
-
-              break
-            }
-            case 'batch-result': {
-              this.handleWorkerBatchResult(workerId, message as BatchTaskResult)
-
-              break
-            }
-            default: {
-              this.handleWorkerMessage(workerId, message as TaskResult)
-            }
+      // 保存原始监听器引用以便后续清理
+      const messageHandler = (
+        message:
+          | TaskResult
+          | BatchTaskResult
+          | WorkerReadyMessage
+          | { type: 'init-complete'; workerId: number },
+      ) => {
+        switch (message.type) {
+          case 'ready':
+          case 'pong': {
+            this.handleWorkerReady(workerId, message as WorkerReadyMessage);
+            break;
           }
-        },
-      )
+          case 'init-complete': {
+            this.handleWorkerInitComplete(workerId);
+            break;
+          }
+          case 'batch-result': {
+            this.handleWorkerBatchResult(workerId, message as BatchTaskResult);
+            break;
+          }
+          default: {
+            this.handleWorkerMessage(workerId, message as TaskResult);
+          }
+        }
+      }
 
-      worker.on('error', (error) => {
-        workerLogger.error(`Worker ${workerId} 进程错误:`, error)
-        this.handleWorkerError(workerId, error)
-      })
+      const errorHandler = (error: Error) => {
+        workerLogger.error(`Worker ${workerId} 进程错误:`, error);
+        this.handleWorkerError(workerId, error);
+      }
 
-      worker.on('exit', (code, signal) => {
+      const exitHandler = (code: number, signal: string) => {
+        // 清理超时计时器
+        clearTimeout(timeoutId);
+        
         if (!this.isShuttingDown) {
           workerLogger.error(
             `Worker ${workerId} 意外退出 (code: ${code}, signal: ${signal})`,
-          )
+          );
           // 重启 worker
-          setTimeout(() => this.createWorker(workerId), 1000)
+          setTimeout(() => this.createWorker(workerId), 1000);
         } else {
-          workerLogger.info(`Worker ${workerId} 正常退出`)
+          workerLogger.info(`Worker ${workerId} 正常退出`);
         }
-      })
+      }
 
       // 设置超时
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         if (!worker.isDead()) {
-          reject(new Error(`Worker ${workerId} 启动超时`))
+          try {
+            // 尝试优雅地终止 worker
+            worker.kill('SIGTERM');
+            // 从映射中移除这个 worker，避免后续操作
+            this.workers.delete(workerId);
+            this.workerStats.delete(workerId);
+            this.workerTaskCounts.delete(workerId);
+            this.initializedWorkers.delete(workerId);
+            this.readyWorkers.delete(workerId);
+            
+            reject(new Error(`Worker ${workerId} 启动超时`))
+          } catch (error) {
+            // 捕获终止过程中的任何错误
+            this.logger.main.error(`尝试终止超时 worker ${workerId} 时出错:`, error);
+            reject(error instanceof Error ? error : new Error(String(error)));
+          }
         }
-      }, 10000)
+      }, 10000);
+
+      // 保存原始监听器引用
+      const onlineHandler = () => {
+        clearTimeout(timeoutId);
+        workerLogger.start(
+          `Worker ${workerId} 进程启动 (PID: ${worker.process?.pid})`,
+        );
+        resolve();
+      };
+
+      // 添加清理函数，防止内存泄漏
+      const cleanup = () => {
+        clearTimeout(timeoutId);
+        worker.removeListener('error', errorHandler);
+        worker.removeListener('exit', exitHandler);
+        worker.removeListener('message', messageHandler);
+        worker.removeListener('online', onlineHandler);
+      };
+
+      // 添加事件监听器
+      worker.on('message', messageHandler);
+      worker.on('error', errorHandler);
+      worker.on('exit', exitHandler);
+      worker.on('online', onlineHandler);
     })
   }
 
