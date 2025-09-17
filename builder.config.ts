@@ -124,7 +124,7 @@ export const defaultBuilderConfig: BuilderConfig = {
     worker: {
       workerCount: os.cpus().length * 2,
       timeout: 30000, // 30 seconds
-      useClusterMode: true,
+      useClusterMode: false,
       workerConcurrency: 2,
     },
   },
